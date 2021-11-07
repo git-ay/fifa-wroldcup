@@ -1,0 +1,53 @@
+.BoxSlider {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+}
+
+.App-header {
+    background-color: #191970;
+    min-height: 150vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(20px + 3vmin);
+    color: white;
+}
+
+.App-link {
+    color: #191970;
+}
+
+body{
+    background: #ffffff;
+}
+
+.slides .slick-prev,
+.slides .slick-next {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+}
+
+
+.slides {
+    position: relative;
+}
+
+.slides .slick-prev,
+.slides .slick-next {
+    position: absolute;
+    top: 50%;
+    z-index:1;
+}
+
+.slides .slick-prev {
+    left: 5%;
+}
+
+.slides .slick-next {
+    right: 5%;
+}

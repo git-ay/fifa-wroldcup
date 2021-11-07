@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@tryghost/helpers": "^1.1.52",
+    "bootstrap": "^5.1.3",
+    "prop-types": "^15.7.2",
+    "react-bootstrap": "^2.0.2",
+    "react-bootstrap-validation": "^0.1.11",
+    "react-slick": "^0.28.1",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@tryghost/helpers-gatsby": "^1.0.57",
+    "gatsby": "^4.1.0"
+  }
+}
