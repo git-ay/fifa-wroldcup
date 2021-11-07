@@ -29,17 +29,17 @@ class IntroPage extends React.Component {
           <MenuBar />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh', alignItems:'center'}}>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '35vh'}}>
-              <img src={img1}  width={950} height={500} mode='fit'   />
+              <img src={img1}  width={750} height={400} mode='fit'   />
             </div>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '25vh'}}>
-              <h1> (choose statistics you want to present...) </h1>
+              <h2> (choose statistics you want to present...) </h2>
             </div>
-          </div>
-          <div>
-              <MoreDeetsSlider />
           </div>
             <div>
               <MoreDeets />
+            </div>
+            <div>
+                <MoreDeetsSlider />
             </div>
         </div>
     )

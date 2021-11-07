@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Card} from "react-bootstrap";
 import {Button} from "@material-ui/core";
 import "./BoxSlider.css";
-import logo from './images/logo3.jpg'
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
