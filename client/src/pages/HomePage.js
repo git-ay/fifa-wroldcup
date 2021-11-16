@@ -6,7 +6,7 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
-import { getAllMatches, getAllPlayers } from '../fetcher'
+import { getAllStats, getAllMatches, getAllPlayers } from '../fetcher'
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
 
@@ -55,6 +55,52 @@ const playerColumns = [
   },
 ];
 
+
+const statsColumns = [
+  {
+    title: 'Name',
+    dataIndex: 'Name',
+    key: 'Name',
+    sorter: (a, b) => a.Name.localeCompare(b.Name),
+    render: (text, row) => <a href={`/stats=${row.league}`}>{text}</a>
+  },
+  {
+    title: 'Nationality',
+    dataIndex: 'Nationality',
+    key: 'Nationality',
+    sorter: (a, b) => a.Nationality.localeCompare(b.Nationality)
+  },
+  {
+    title: 'Rating',
+    dataIndex: 'Rating',
+    key: 'Rating',
+    sorter: (a, b) => a.Rating - b.Rating
+
+  },
+  // TASK 7: add a column for Potential, with the ability to (numerically) sort ,
+  {
+    title: 'Potential',
+    dataIndex: 'Potential',
+    key: 'Potential',
+    sorter: (a, b) => a.Potential - b.Potential
+
+  },
+  // TASK 8: add a column for Club, with the ability to (alphabetically) sort
+  {
+    title: "Club",
+    dataIndex: "Club",
+    key: "Club",
+    sort: (a, b) => a.Club.localeCompare(b.Club),
+  },
+  // TASK 9: add a column for Value - no sorting required
+  {
+    title: "Value",
+    dataIndex: "Value",
+    key: "Value",
+  },
+];
+
+
 class HomePage extends React.Component {
 
   constructor(props) {
@@ -62,6 +108,7 @@ class HomePage extends React.Component {
 
     this.state = {
       matchesResults: [],
+      player_stat: [],
       matchesPageNumber: 1,
       matchesPageSize: 10,
       playersResults: [],
@@ -69,7 +116,9 @@ class HomePage extends React.Component {
     }
 
     this.leagueOnChange = this.leagueOnChange.bind(this)
+    this.statOnChange = this.statOnChange.bind(this)
     this.goToMatch = this.goToMatch.bind(this)
+    this.goToStat = this.goToStat.bind(this)
   }
 
 
@@ -77,11 +126,17 @@ class HomePage extends React.Component {
     window.location = `/matches?id=${matchId}`
   }
 
+  goToStat() {
+    window.location = `/stat`
+  }
+
   leagueOnChange(value) {
     // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
     // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
     getAllMatches(null, null, value).then((res) => {
       this.setState({ matchesResults: res.results });
+      console.log("BBBBBBBBBBBBBBBBB")
+
     });
   }
 
@@ -100,6 +155,30 @@ class HomePage extends React.Component {
 
   }
 
+  //------------------------------------------
+  statOnChange(value) {
+    getAllStats(null, null, value).then((res) => {
+      this.setState({ player_stat: res.results });
+    });
+  }
+
+  componentDidMount2() {
+    getAllStats(null, null, 'D1').then(res => {
+      this.setState({ player_stat: res.results })
+      console.log(res)
+    })
+
+    getAllPlayers().then(res => {
+      console.log(res.results)
+      console.log("BBBBBBBBBBBBBBBBB")
+
+      // TASK 1: set the correct state attribute to res.results
+      this.setState({ playersResults: res.results })
+    })
+
+
+  }
+  //-----------------------------------------
   render() {
 
     return (
@@ -142,8 +221,15 @@ class HomePage extends React.Component {
             </Table>
 
           </div>
+          <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
+            <h3>Player Statistics </h3>
+            <Table dataSource={this.state.playersResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}/>
+              <div><h1>{this.state.matchesPageNumber}</h1></div>
 
 
+              {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
+
+          </div>
         </div>
     )
   }

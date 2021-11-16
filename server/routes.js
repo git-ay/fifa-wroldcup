@@ -104,10 +104,46 @@ async function all_matches(req, res) {
     }
 }
 
+//---------------------------------------
+// Route 3b (handler)
+async function all_stats(req, res) {
+    const player_name = 'lionel messi'
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        // TODO: query and return results here:
+        pag = req.query.page
+        pag_size = req.query.pagesize
+        connection.query(`SELECT *  
+        FROM events 
+        WHERE player = 'lionel messi'`, function (error, results, fields)
+        {
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+        connection.query(`SELECT *  
+        FROM Events 
+        WHERE player = '${player_name}'`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+}
+//---------------------------------------
+
 // Route 4 (handler)
 async function all_players(req, res) {
     // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
-
     if (req.query.page && !isNaN(req.query.page)) {
         // This is the case where page is defined.
         // The SQL schema has the attribute OverallRating, but modify it to match spec!
@@ -357,6 +393,7 @@ module.exports = {
     hello,
     jersey,
     all_matches,
+    all_stats,
     all_players,
     match,
     player,
