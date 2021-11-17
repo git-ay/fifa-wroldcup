@@ -7,8 +7,8 @@ const getAllMatches = async (page, pagesize, league) => {
     return res.json()
 }
 
-const getAllStats = async (page, pagesize, league) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/stats/${league}?page=${page}&pagesize=${pagesize}`, {
+const getAllStats = async (page, pagesize, year) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/stats?page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
     return res.json()

@@ -58,48 +58,34 @@ const playerColumns = [
 
 const statsColumns = [
   {
-    title: 'Name',
-    dataIndex: 'Name',
-    key: 'Name',
+    title: 'Round',
+    dataIndex: 'RoundID',
+    key: 'RoundID',
     sorter: (a, b) => a.Name.localeCompare(b.Name),
     render: (text, row) => <a href={`/stats=${row.league}`}>{text}</a>
   },
   {
-    title: 'Nationality',
-    dataIndex: 'Nationality',
-    key: 'Nationality',
+    title: 'Match',
+    dataIndex: 'MatchID',
+    key: 'MatchID',
     sorter: (a, b) => a.Nationality.localeCompare(b.Nationality)
   },
   {
-    title: 'Rating',
-    dataIndex: 'Rating',
-    key: 'Rating',
+    title: 'Team_Initials',
+    dataIndex: 'Team_Initials',
+    key: 'Team_Initials',
     sorter: (a, b) => a.Rating - b.Rating
 
   },
   // TASK 7: add a column for Potential, with the ability to (numerically) sort ,
   {
-    title: 'Potential',
-    dataIndex: 'Potential',
-    key: 'Potential',
+    title: 'Coach_Name',
+    dataIndex: 'Coach_Name',
+    key: 'Coach_Name',
     sorter: (a, b) => a.Potential - b.Potential
 
   },
-  // TASK 8: add a column for Club, with the ability to (alphabetically) sort
-  {
-    title: "Club",
-    dataIndex: "Club",
-    key: "Club",
-    sort: (a, b) => a.Club.localeCompare(b.Club),
-  },
-  // TASK 9: add a column for Value - no sorting required
-  {
-    title: "Value",
-    dataIndex: "Value",
-    key: "Value",
-  },
 ];
-
 
 class HomePage extends React.Component {
 
@@ -112,11 +98,12 @@ class HomePage extends React.Component {
       matchesPageNumber: 1,
       matchesPageSize: 10,
       playersResults: [],
+      statResults: [],
+      valueTest: null,
       pagination: null
     }
 
     this.leagueOnChange = this.leagueOnChange.bind(this)
-    this.statOnChange = this.statOnChange.bind(this)
     this.goToMatch = this.goToMatch.bind(this)
     this.goToStat = this.goToStat.bind(this)
   }
@@ -135,17 +122,24 @@ class HomePage extends React.Component {
     // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
     getAllMatches(null, null, value).then((res) => {
       this.setState({ matchesResults: res.results });
-      console.log("BBBBBBBBBBBBBBBBB")
+      this.state.valueTest = value
 
     });
   }
 
-  componentDidMount() {
+  componentDidMount()  {
     getAllMatches(null, null, 'D1').then(res => {
       this.setState({ matchesResults: res.results })
       console.log(res)
     })
 
+
+    getAllStats().then(res => {
+      console.log(res.results)
+      // TASK 1: set the correct state attribute to res.results
+      this.setState({ statResults: res.results })
+    })
+
     getAllPlayers().then(res => {
       console.log(res.results)
       // TASK 1: set the correct state attribute to res.results
@@ -155,30 +149,7 @@ class HomePage extends React.Component {
 
   }
 
-  //------------------------------------------
-  statOnChange(value) {
-    getAllStats(null, null, value).then((res) => {
-      this.setState({ player_stat: res.results });
-    });
-  }
 
-  componentDidMount2() {
-    getAllStats(null, null, 'D1').then(res => {
-      this.setState({ player_stat: res.results })
-      console.log(res)
-    })
-
-    getAllPlayers().then(res => {
-      console.log(res.results)
-      console.log("BBBBBBBBBBBBBBBBB")
-
-      // TASK 1: set the correct state attribute to res.results
-      this.setState({ playersResults: res.results })
-    })
-
-
-  }
-  //-----------------------------------------
   render() {
 
     return (
@@ -203,7 +174,7 @@ class HomePage extends React.Component {
               return {
                 onClick: event => {this.goToMatch(record.MatchId)}, // clicking a row takes the user to a detailed view of the match in the /matches page using the MatchId parameter
               };
-            }} dataSource={this.state.matchesResults} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}>
+            }} dataSource={this.state.matchesResults} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3, showQuickJumper:true }}>
               <ColumnGroup title="Teams">
                 {/* TASK 4: correct the title for the 'Home' column and add a similar column for 'Away' team in this ColumnGroup */}
                 <Column title="Home" dataIndex="Home" key="Home" sorter= {(a, b) => a.Home.localeCompare(b.Home)}/>
@@ -223,9 +194,10 @@ class HomePage extends React.Component {
           </div>
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
             <h3>Player Statistics </h3>
-            <Table dataSource={this.state.playersResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}/>
+            <Table dataSource={this.state.statResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3, showQuickJumper:true }}/>
               <div><h1>{this.state.matchesPageNumber}</h1></div>
-
+              <div>
+              </div>
 
               {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
 
