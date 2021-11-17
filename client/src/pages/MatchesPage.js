@@ -88,13 +88,14 @@ class MatchesPage extends React.Component {
                     <Row>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
-                                <label>Home Team</label>
+                                <label>Home Team21</label>
                                 <FormInput
                                     placeholder="Home Team"
                                     value={this.state.homeQuery}
                                     onChange={this.handleHomeQueryChange}
                                 />
                             </FormGroup>
+
                         </Col>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
@@ -277,7 +278,9 @@ class MatchesPage extends React.Component {
                                 </Row>
                             </CardBody>
                         </Card>
+
                     </div>
+
                 ) : null}
                 <Divider />
             </div>

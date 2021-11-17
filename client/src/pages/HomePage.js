@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
+
 import {
   Table,
   Pagination,
-  Select
+  Select, Row, Col, Divider
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
-import { getAllStats, getAllMatches, getAllPlayers } from '../fetcher'
+import {playerNames, getAllStats, getAllMatches, getAllPlayers, getPlayerNames} from '../fetcher'
+import {Button, Form, FormGroup, FormInput} from "shards-react";
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
+
 
 
 const playerColumns = [
@@ -61,14 +64,14 @@ const statsColumns = [
     title: 'Round',
     dataIndex: 'RoundID',
     key: 'RoundID',
-    sorter: (a, b) => a.Name.localeCompare(b.Name),
-    render: (text, row) => <a href={`/stats=${row.league}`}>{text}</a>
+    sorter: (a, b) => a.RoundID.localeCompare(b.RoundID),
+    render: (text, row) => <a href={`/stats=${row.stats}`}>{text}</a>
   },
   {
     title: 'Match',
     dataIndex: 'MatchID',
     key: 'MatchID',
-    sorter: (a, b) => a.Nationality.localeCompare(b.Nationality)
+    sorter: (a, b) => a.MatchID.localeCompare(b.MatchID)
   },
   {
     title: 'Team_Initials',
@@ -87,6 +90,16 @@ const statsColumns = [
   },
 ];
 
+const playerNamesColumns = [
+  {
+    title: 'Round',
+    dataIndex: 'Player_Name',
+    key: 'Player_Name',
+    sorter: (a, b) => a.RoundID.localeCompare(b.RoundID),
+    render: (text, row) => <a href={`/stats=${row.stats}`}>{text}</a>
+  },
+];
+
 class HomePage extends React.Component {
 
   constructor(props) {
@@ -94,11 +107,13 @@ class HomePage extends React.Component {
 
     this.state = {
       matchesResults: [],
+      playerName: "",
       player_stat: [],
       matchesPageNumber: 1,
       matchesPageSize: 10,
       playersResults: [],
       statResults: [],
+      playerNames: [],
       valueTest: null,
       pagination: null
     }
@@ -106,8 +121,9 @@ class HomePage extends React.Component {
     this.leagueOnChange = this.leagueOnChange.bind(this)
     this.goToMatch = this.goToMatch.bind(this)
     this.goToStat = this.goToStat.bind(this)
-  }
 
+
+  }
 
   goToMatch(matchId) {
     window.location = `/matches?id=${matchId}`
@@ -140,6 +156,12 @@ class HomePage extends React.Component {
       this.setState({ statResults: res.results })
     })
 
+    getPlayerNames().then(res => {
+      console.log(res.results)
+      // TASK 1: set the correct state attribute to res.results
+      this.setState({ playerNames: res.results })
+    })
+
     getAllPlayers().then(res => {
       console.log(res.results)
       // TASK 1: set the correct state attribute to res.results
@@ -151,10 +173,68 @@ class HomePage extends React.Component {
 
 
   render() {
+    function App(){
+      const [count,setCount] = useState(4)
+      function decrementCount (){
+        setCount(count-1)
+      }
+      function incrementCount (){
+        setCount(count+1)
+      }
+      return(
+          <>
+            <button onClick={decrementCount}>-</button>
+            <span>{count}</span>
+            <button onClick={incrementCount}>+</button>
+          </>
+      )
+    }
+
+
 
     return (
+
         <div>
           <MenuBar />
+
+          <Form style={{ width: "80vw", margin: "0 auto", marginTop: "5vh" }}>
+            <Row>
+              <Col flex={2}>
+                <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
+                  <label>Player Name</label>
+                  <FormInput
+                      placeholder="cristiano ronaldo..."
+                      value={this.state.playerName}
+                      onChange={this.handleHomeQueryChange}
+                  />
+                </FormGroup>
+
+              </Col>
+              <Col flex={2}>
+                <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
+                  <label>Year</label>
+                  <FormInput
+                      placeholder="2014..."
+                      value={this.state.awayQuery}
+                      onChange={this.handleAwayQueryChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col flex={2}>
+                <FormGroup style={{ width: "10vw" }}>
+                  <Button
+                      style={{ marginTop: "4vh" }}
+                      onClick={this.updateSearchResults}
+                  >
+                    Search
+                  </Button>
+                </FormGroup>
+              </Col>
+            </Row>
+          </Form>
+          <Divider />
+
+
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h3>Players</h3>
             <Table dataSource={this.state.playersResults} columns={playerColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}/>
@@ -194,13 +274,17 @@ class HomePage extends React.Component {
           </div>
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
             <h3>Player Statistics </h3>
+
+            <div>
+              <input type="text" placeholder="Search..."/>
+            </div>
+
+
             <Table dataSource={this.state.statResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3, showQuickJumper:true }}/>
-              <div><h1>{this.state.matchesPageNumber}</h1></div>
-              <div>
-              </div>
+            <Table dataSource={this.state.playerNames} columns={playerNamesColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3 }}/>
 
-              {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
-
+            {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
+            <div> <App></App></div>
           </div>
         </div>
     )

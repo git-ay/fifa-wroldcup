@@ -187,6 +187,42 @@ async function all_stats(req, res) {
 
 }
 //---------------------
+async function all_playerNames(req, res) {
+    // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
+    if (req.query.page && !isNaN(req.query.page)) {
+        // This is the case where page is defined.
+        // The SQL schema has the attribute OverallRating, but modify it to match spec!
+        // TODO: query and return results here:
+        const page = req.query.page
+        const pagesize = req.query.pagesize ? req.query.pagesize : 10
+        const offset = (page * pagesize) - pagesize
+        // console.log(pagesize)
+        connection.query(`SELECT distinct Player_Name from WorldCupPlayers`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+        // The SQL schema has the attribute OverallRating, but modify it to match spec!
+        // we have implemented this for you to see how to return results by querying the database
+        connection.query(`SELECT distinct Player_Name from WorldCupPlayers`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+
+
+}
 
 // ********************************************
 //             MATCH-SPECIFIC ROUTES
@@ -399,6 +435,7 @@ module.exports = {
     jersey,
     all_matches,
     all_stats,
+    all_playerNames,
     all_players,
     match,
     player,
