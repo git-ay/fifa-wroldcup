@@ -90,15 +90,6 @@ const statsColumns = [
   },
 ];
 
-const playerNamesColumns = [
-  {
-    title: 'Round',
-    dataIndex: 'Player_Name',
-    key: 'Player_Name',
-    sorter: (a, b) => a.RoundID.localeCompare(b.RoundID),
-    render: (text, row) => <a href={`/stats=${row.stats}`}>{text}</a>
-  },
-];
 
 class HomePage extends React.Component {
 
@@ -173,23 +164,6 @@ class HomePage extends React.Component {
 
 
   render() {
-    function App(){
-      const [count,setCount] = useState(4)
-      function decrementCount (){
-        setCount(count-1)
-      }
-      function incrementCount (){
-        setCount(count+1)
-      }
-      return(
-          <>
-            <button onClick={decrementCount}>-</button>
-            <span>{count}</span>
-            <button onClick={incrementCount}>+</button>
-          </>
-      )
-    }
-
 
 
     return (
@@ -223,18 +197,29 @@ class HomePage extends React.Component {
               <Col flex={2}>
                 <FormGroup style={{ width: "10vw" }}>
                   <Button
-                      style={{ marginTop: "4vh" }}
+                      style={{ marginTop: "2.5vh" }}
                       onClick={this.updateSearchResults}
                   >
                     Search
                   </Button>
                 </FormGroup>
+                <Select defaultValue="cristiano ronaldo" style={{ width: 150 }} onChange={this.leagueOnChange}>
+                  <Option player="cristiano ronaldo">Ronaldo</Option>
+                  {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
+                  <Option player="SP1">Messi</Option>
+                  <Option player="F1">Neymar</Option>
+                  <Option player="I1">aaa</Option>
+                  <Option player="E0">bbb</Option>
+                </Select>
               </Col>
             </Row>
           </Form>
+
+          <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
+            <h3>Player Statistics </h3>
+            <Table dataSource={this.state.statResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3}}/>
+          </div>
           <Divider />
-
-
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
             <h3>Players</h3>
             <Table dataSource={this.state.playersResults} columns={playerColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 5, showQuickJumper:true }}/>
@@ -272,20 +257,7 @@ class HomePage extends React.Component {
             </Table>
 
           </div>
-          <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-            <h3>Player Statistics </h3>
 
-            <div>
-              <input type="text" placeholder="Search..."/>
-            </div>
-
-
-            <Table dataSource={this.state.statResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3, showQuickJumper:true }}/>
-            <Table dataSource={this.state.playerNames} columns={playerNamesColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3 }}/>
-
-            {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
-            <div> <App></App></div>
-          </div>
         </div>
     )
   }
