@@ -126,10 +126,10 @@ class HomePage extends React.Component {
     });
   }
 
-  playerOnChange(player) {
+  playerOnChange(value) {
     // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
     // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
-    getAllStats(null, null, player).then((res) => {
+    getAllStats(null, null, value).then((res) => {
       this.setState({ statResults: res.results });
 
     });
@@ -205,13 +205,14 @@ class HomePage extends React.Component {
                     Search
                   </Button>
                 </FormGroup>
-                <Select defaultPlayer="Ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
+                <Select defaultValue="Ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
                   <Option player="cristiano ronaldo">Ronaldo</Option>
                   {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
-                  <Option player="neymar">Messi</Option>
-                  <Option player="robert lewandowski">Lewandowski</Option>
-                  <Option player="sergio ramos">Sergio Ramos</Option>
-                  <Option player="karim benzema">Karim Benzema</Option>
+                  <Option value="lionel messi">Messi</Option>
+                  <Option value="neymar">Neymar</Option>
+                  <Option value="robert lewandowski">Lewandowski</Option>
+                  <Option value="sergio ramos">Sergio Ramos</Option>
+                  <Option value="karim benzema">Karim Benzema</Option>
                 </Select>
               </Col>
             </Row>
