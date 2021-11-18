@@ -160,7 +160,17 @@ async function all_stats(req, res) {
         const pagesize = req.query.pagesize ? req.query.pagesize : 10
         const offset = (page * pagesize) - pagesize
         // console.log(pagesize)
-        connection.query(`select RoundID,MatchID,Team_Initials,Coach_Name from WorldCupPlayers`, function (error, results, fields) {
+        connection.query(`WITH CTE
+        AS(
+        Select player, EM.date,
+           SUM(CASE WHEN is_goal = 1 THEN 1 ELSE 0 END) AS Goals,
+           SUM(CASE WHEN event_type = 4 THEN 1 ELSE 0 END) AS Yellow_Cards,
+           SUM(CASE WHEN event_type = 5 or event_type = 6 THEN 1 ELSE 0 END) AS Red_Cards
+        From events inner join events_metadata as EM on events.id_odsp=EM.id_odsp
+        GROUP BY player)
+        Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
+        From CTE
+        Where date>= 2012-01-01 and date<= 2017-01-01 and player='cristiano ronaldo'`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
@@ -173,7 +183,17 @@ async function all_stats(req, res) {
     } else {
         // The SQL schema has the attribute OverallRating, but modify it to match spec!
         // we have implemented this for you to see how to return results by querying the database
-        connection.query(`select RoundID,MatchID,Team_Initials,Coach_Name from WorldCupPlayers`, function (error, results, fields) {
+        connection.query(`WITH CTE
+        AS(
+        Select player, EM.date,
+           SUM(CASE WHEN is_goal = 1 THEN 1 ELSE 0 END) AS Goals,
+           SUM(CASE WHEN event_type = 4 THEN 1 ELSE 0 END) AS Yellow_Cards,
+           SUM(CASE WHEN event_type = 5 or event_type = 6 THEN 1 ELSE 0 END) AS Red_Cards
+        From events inner join events_metadata as EM on events.id_odsp=EM.id_odsp
+        GROUP BY player)
+        Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
+        From CTE
+        Where date>= 2012-01-01 and date<= 2017-01-01 and player='cristiano ronaldo'`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)

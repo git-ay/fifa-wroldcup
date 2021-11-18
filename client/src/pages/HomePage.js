@@ -61,31 +61,25 @@ const playerColumns = [
 
 const statsColumns = [
   {
-    title: 'Round',
-    dataIndex: 'RoundID',
-    key: 'RoundID',
-    sorter: (a, b) => a.RoundID.localeCompare(b.RoundID),
-    render: (text, row) => <a href={`/stats=${row.stats}`}>{text}</a>
+    title: 'player',
+    dataIndex: 'player',
+    key: 'player',
   },
   {
-    title: 'Match',
-    dataIndex: 'MatchID',
-    key: 'MatchID',
-    sorter: (a, b) => a.MatchID.localeCompare(b.MatchID)
+    title: 'Goals',
+    dataIndex: 'Goals',
+    key: 'Goals',
   },
   {
-    title: 'Team_Initials',
-    dataIndex: 'Team_Initials',
-    key: 'Team_Initials',
-    sorter: (a, b) => a.Rating - b.Rating
+    title: 'Yellow_Cards',
+    dataIndex: 'Yellow_Cards',
+    key: 'Yellow_Cards',
 
   },
-  // TASK 7: add a column for Potential, with the ability to (numerically) sort ,
   {
-    title: 'Coach_Name',
-    dataIndex: 'Coach_Name',
-    key: 'Coach_Name',
-    sorter: (a, b) => a.Potential - b.Potential
+    title: 'Red_Cards',
+    dataIndex: 'Red_Cards',
+    key: 'Red_Cards',
 
   },
 ];
