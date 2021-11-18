@@ -120,7 +120,6 @@ class MatchesPage extends React.Component {
                     </Row>
                 </Form>
                 <Divider />
-                {/* TASK 12: Copy over your implementation of the matches table from the home page */}
                 <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
                     <Table
                         onRow={(record, rowIndex) => {

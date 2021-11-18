@@ -8,6 +8,7 @@ const getAllMatches = async (page, pagesize, league) => {
 }
 
 const getAllStats = async (page, pagesize, player) => {
+    //{player = 'lionel messi'}
     var res = await fetch(`http://${config.server_host}:${config.server_port}/stats/${player}?page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })

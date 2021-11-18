@@ -103,6 +103,7 @@ class HomePage extends React.Component {
     }
 
     this.leagueOnChange = this.leagueOnChange.bind(this)
+    this.playerOnChange = this.playerOnChange.bind(this)
     this.goToMatch = this.goToMatch.bind(this)
     this.goToStat = this.goToStat.bind(this)
 
@@ -122,16 +123,14 @@ class HomePage extends React.Component {
     // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
     getAllMatches(null, null, value).then((res) => {
       this.setState({ matchesResults: res.results });
-      this.state.valueTest = value
-
     });
   }
 
   playerOnChange(player) {
     // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
     // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
-    getAllMatches(null, null, player).then((res) => {
-      this.setState({ matchesResults: res.results });
+    getAllStats(null, null, player).then((res) => {
+      this.setState({ statResults: res.results });
 
     });
   }
@@ -181,7 +180,7 @@ class HomePage extends React.Component {
                   <label>Player Name</label>
                   <FormInput
                       placeholder="cristiano ronaldo..."
-                      value={this.state.playerName}
+                      player={this.state.playerName}
                       onChange={this.handleHomeQueryChange}
                   />
                 </FormGroup>
@@ -206,13 +205,13 @@ class HomePage extends React.Component {
                     Search
                   </Button>
                 </FormGroup>
-                <Select defaultValue="cristiano ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
+                <Select defaultPlayer="Ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
                   <Option player="cristiano ronaldo">Ronaldo</Option>
                   {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
-                  <Option player="SP1">Messi</Option>
-                  <Option player="F1">Neymar</Option>
-                  <Option player="I1">aaa</Option>
-                  <Option player="E0">bbb</Option>
+                  <Option player="neymar">Messi</Option>
+                  <Option player="robert lewandowski">Lewandowski</Option>
+                  <Option player="sergio ramos">Sergio Ramos</Option>
+                  <Option player="karim benzema">Karim Benzema</Option>
                 </Select>
               </Col>
             </Row>
