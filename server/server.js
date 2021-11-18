@@ -22,7 +22,7 @@ app.get('/jersey/:choice', routes.jersey)
 app.get('/matches/:league', routes.all_matches)
 
 // Route 3b - register as GET
-app.get('/stats', routes.all_stats)
+app.get('/stats/:player', routes.all_stats)
 
 // Route 3c - register as GET
 app.get('/playerNames', routes.all_playerNames)

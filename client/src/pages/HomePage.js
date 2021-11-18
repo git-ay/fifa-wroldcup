@@ -7,7 +7,7 @@ import {
 } from 'antd'
 
 import MenuBar from '../components/MenuBar';
-import {playerNames, getAllStats, getAllMatches, getAllPlayers, getPlayerNames} from '../fetcher'
+import {getAllStats, getAllMatches, getAllPlayers, getPlayerNames} from '../fetcher'
 import {Button, Form, FormGroup, FormInput} from "shards-react";
 const { Column, ColumnGroup } = Table;
 const { Option } = Select;
@@ -99,7 +99,6 @@ class HomePage extends React.Component {
       playersResults: [],
       statResults: [],
       playerNames: [],
-      valueTest: null,
       pagination: null
     }
 
@@ -128,6 +127,16 @@ class HomePage extends React.Component {
     });
   }
 
+  playerOnChange(player) {
+    // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
+    // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
+    getAllMatches(null, null, player).then((res) => {
+      this.setState({ matchesResults: res.results });
+
+    });
+  }
+
+
   componentDidMount()  {
     getAllMatches(null, null, 'D1').then(res => {
       this.setState({ matchesResults: res.results })
@@ -135,7 +144,7 @@ class HomePage extends React.Component {
     })
 
 
-    getAllStats().then(res => {
+    getAllStats(null, null, 'cristiano ronaldo').then(res => {
       console.log(res.results)
       // TASK 1: set the correct state attribute to res.results
       this.setState({ statResults: res.results })
@@ -197,7 +206,7 @@ class HomePage extends React.Component {
                     Search
                   </Button>
                 </FormGroup>
-                <Select defaultValue="cristiano ronaldo" style={{ width: 150 }} onChange={this.leagueOnChange}>
+                <Select defaultValue="cristiano ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
                   <Option player="cristiano ronaldo">Ronaldo</Option>
                   {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
                   <Option player="SP1">Messi</Option>

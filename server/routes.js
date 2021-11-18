@@ -64,8 +64,7 @@ async function all_matches(req, res) {
     // parse in the league encoding - this is how you would use the ternary operator to set a variable to a default value
     // we didn't specify this default value for league, and you could change it if you want! 
     const league = req.params.league ? req.params.league : 'D1'
-    const year = req.params.year ? req.params.year : '2014'
-    const team = req.params.team ? req.params.team : 'FRA'
+
 
     // use this league encoding in your query to furnish the correct results
 
@@ -152,6 +151,8 @@ async function all_players(req, res) {
 
 async function all_stats(req, res) {
     // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
+    const player = req.params.player ? req.params.player : 'cristiano ronaldo'
+
     if (req.query.page && !isNaN(req.query.page)) {
         // This is the case where page is defined.
         // The SQL schema has the attribute OverallRating, but modify it to match spec!
@@ -159,7 +160,6 @@ async function all_stats(req, res) {
         const page = req.query.page
         const pagesize = req.query.pagesize ? req.query.pagesize : 10
         const offset = (page * pagesize) - pagesize
-        // console.log(pagesize)
         connection.query(`WITH CTE
         AS(
         Select player, EM.date,
@@ -170,7 +170,7 @@ async function all_stats(req, res) {
         GROUP BY player)
         Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
         From CTE
-        Where date>= 2012-01-01 and date<= 2017-01-01 and player='cristiano ronaldo'`, function (error, results, fields) {
+        Where date>= 2012-01-01 and date<= 2017-01-01 and player='${player}'`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
@@ -193,7 +193,7 @@ async function all_stats(req, res) {
         GROUP BY player)
         Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
         From CTE
-        Where date>= 2012-01-01 and date<= 2017-01-01 and player='cristiano ronaldo'`, function (error, results, fields) {
+        Where date>= 2012-01-01 and date<= 2017-01-01 and player='${player}'`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
