@@ -206,8 +206,7 @@ class HomePage extends React.Component {
                   </Button>
                 </FormGroup>
                 <Select defaultValue="Ronaldo" style={{ width: 150 }} onChange={this.playerOnChange}>
-                  <Option player="cristiano ronaldo">Ronaldo</Option>
-                  {/* TASK 3: Take a look at Dataset Information.md from MS1 and add other options to the selector here  */}
+                  <Option value="cristiano ronaldo">Ronaldo</Option>
                   <Option value="lionel messi">Messi</Option>
                   <Option value="neymar">Neymar</Option>
                   <Option value="robert lewandowski">Lewandowski</Option>
