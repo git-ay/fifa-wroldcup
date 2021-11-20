@@ -6,6 +6,8 @@ import {
   Select, Row, Col, Divider
 } from 'antd'
 
+
+
 import MenuBar from '../components/MenuBar';
 import {getAllStats, getAllMatches, getAllPlayers, getPlayerNames} from '../fetcher'
 import {Button, Form, FormGroup, FormInput} from "shards-react";
@@ -219,7 +221,7 @@ class HomePage extends React.Component {
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
             <h3>Player Statistics </h3>
-            <Table dataSource={this.state.statResults} columns={statsColumns} pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3}}/>
+            <Table dataSource={this.state.statResults} columns={statsColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3}}/>
           </div>
           <Divider />
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '5vh' }}>
@@ -259,6 +261,7 @@ class HomePage extends React.Component {
             </Table>
 
           </div>
+
 
         </div>
     )

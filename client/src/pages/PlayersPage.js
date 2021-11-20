@@ -252,6 +252,7 @@ class PlayersPage extends React.Component {
                     />
                 </div>
                 <Divider />
+                <div><h3>aaaa</h3></div>
 
                 {this.state.selectedPlayerDetails ? (
                     <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
@@ -285,9 +286,8 @@ class PlayersPage extends React.Component {
                                 <br></br>
                                 <Row gutter="30" align="middle" justify="left">
                                     <Col>Age: {this.state.selectedPlayerDetails.Age}</Col>
-                                    {/* TASK 28: add two more columns here for Height and Weight, with the appropriate labels as above */}
-                                    <Col>Age: {this.state.selectedPlayerDetails.height}</Col>
-                                    <Col>Age: {this.state.selectedPlayerDetails.weight}</Col>
+                                    <Col>Height: {this.state.selectedPlayerDetails.height}</Col>
+                                    <Col>Weight: {this.state.selectedPlayerDetails.weight}</Col>
                                     <Col flex={2} style={{ textAlign: "right" }}>
                                         {this.state.selectedPlayerDetails.Nationality}
                                         <img
@@ -313,6 +313,7 @@ class PlayersPage extends React.Component {
                                 </Row>
                             </CardBody>
                         </Card>
+                        <div><h3>bbbbb</h3></div>
 
                         <Card style={{ marginTop: "2vh" }}>
                             <CardBody>
@@ -358,8 +359,6 @@ class PlayersPage extends React.Component {
                                         </Progress>
                                     </Col>
                                     <Col push={2} flex={2}>
-                                        {/*TASK 32: In case the player is a GK, show a radar chart (replacing 'null' below) with the labels: Agility, Ball Control, Passing, Positioning, Stamina, Strength */}
-
                                         {this.state.selectedPlayerDetails.BestPosition === "GK" ? (
                                             <RadarChart
                                                 data={[this.state.selectedPlayerDetails]}

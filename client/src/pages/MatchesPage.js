@@ -1,14 +1,17 @@
 import React from "react";
+import {Card,} from "react-bootstrap";
+import ChartistGraph from "react-chartist";
+
 import {
     Form,
     FormInput,
     FormGroup,
     Button,
-    Card,
     CardBody,
     CardTitle,
     Progress,
 } from "shards-react";
+
 
 
 
@@ -88,14 +91,13 @@ class MatchesPage extends React.Component {
                     <Row>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
-                                <label>Home Team21</label>
+                                <label>Home Team</label>
                                 <FormInput
                                     placeholder="Home Team"
                                     value={this.state.homeQuery}
                                     onChange={this.handleHomeQueryChange}
                                 />
                             </FormGroup>
-
                         </Col>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
@@ -120,6 +122,7 @@ class MatchesPage extends React.Component {
                     </Row>
                 </Form>
                 <Divider />
+                {/* TASK 12: Copy over your implementation of the matches table from the home page */}
                 <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
                     <Table
                         onRow={(record, rowIndex) => {
@@ -277,11 +280,43 @@ class MatchesPage extends React.Component {
                                 </Row>
                             </CardBody>
                         </Card>
-
                     </div>
-
                 ) : null}
                 <Divider />
+                <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
+                    <Card>
+                        <Card.Header>
+                            <Card.Title as="h4">Winning Visualization</Card.Title>
+                            <p className="card-category">Summary</p>
+                        </Card.Header>
+                        <Card.Body>
+                            <div
+                                className="ct-chart ct-perfect-fourth"
+                                id="chartPreferences"
+                            >
+                                <ChartistGraph
+                                    data={{
+                                        labels: ["70%", "20%", "40%"],
+                                        series: [70, 20, 40],
+                                    }}
+                                    type="Pie"
+                                />
+                            </div>
+                            <div className="legend">
+                                <i className="fas fa-circle text-info"></i>
+                                Open <i className="fas fa-circle text-danger"></i>
+                                Bounce <i className="fas fa-circle text-warning"></i>
+                                Unsubscribe
+                            </div>
+                            <hr></hr>
+                            <div className="stats">
+                                <i className="far fa-clock"></i>
+                                Campaign sent 2 days ago
+                            </div>
+                        </Card.Body>
+                    </Card>
+
+                </div>
             </div>
         );
     }
