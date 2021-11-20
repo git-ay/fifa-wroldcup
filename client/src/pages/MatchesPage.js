@@ -18,7 +18,7 @@ import {
 
 
 import { Table, Pagination, Row, Col, Divider, Select } from "antd";
-import { getMatchSearch, getMatch } from "../fetcher";
+import {getMatchSearch, getMatch, getAllStats} from "../fetcher";
 
 
 import MenuBar from "../components/MenuBar";
@@ -26,6 +26,31 @@ import {css} from "@emotion/react";
 const { Option } = Select;
 
 const { Column, ColumnGroup } = Table;
+const statsColumns = [
+    {
+        title: 'player',
+        dataIndex: 'player',
+        key: 'player',
+    },
+    {
+        title: 'Goals',
+        dataIndex: 'Goals',
+        key: 'Goals',
+    },
+    {
+        title: 'Yellow_Cards',
+        dataIndex: 'Yellow_Cards',
+        key: 'Yellow_Cards',
+
+    },
+    {
+        title: 'Red_Cards',
+        dataIndex: 'Red_Cards',
+        key: 'Red_Cards',
+
+    },
+];
+
 
 class MatchesPage extends React.Component {
     constructor(props) {
@@ -38,6 +63,8 @@ class MatchesPage extends React.Component {
                 ? window.location.search.substring(1).split("=")[1]
                 : 0,
             selectedMatchDetails: null,
+            statResults: [],
+
         };
 
         this.handleAwayQueryChange = this.handleAwayQueryChange.bind(this);
@@ -66,12 +93,23 @@ class MatchesPage extends React.Component {
             }
         );
     }
+    playerOnChange(value) {
+        // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
+        // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
+        getAllStats(null, null, value).then((res) => {
+            this.setState({ statResults: res.results });
 
+        });
+    }
     componentDidMount() {
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(res => {
             this.setState({ matchesResults: res.results })
         })
-
+        getAllStats(null, null, 'cristiano ronaldo').then(res => {
+            console.log(res.results)
+            // TASK 1: set the correct state attribute to res.results
+            this.setState({ statResults: res.results })
+        })
         getMatch(this.state.selectedMatchId).then(res => {
             this.setState({ selectedMatchDetails: res.results[0] })
         })
@@ -124,37 +162,9 @@ class MatchesPage extends React.Component {
                     </Row>
                 </Form>
                 <Divider />
-                {/* TASK 12: Copy over your implementation of the matches table from the home page */}
-                <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                    <Table
-                        onRow={(record, rowIndex) => {
-                            return {
-                                onClick: (event) => {
-                                    this.goToMatch(record.MatchId);
-                                }, // clicking a row takes the user to a detailed view of the match in the /matches page using the MatchId parameter
-                            };
-                        }}
-                        dataSource={this.state.matchesResults}
-                        pagination={{
-                            pageSizeOptions: [5, 10],
-                            defaultPageSize: 5,
-                            showQuickJumper: true,
-                        }}
-                    >
-                        <ColumnGroup title="Teams">
-                            {/* TASK 4: correct the title for the 'Home' column and add a similar column for 'Away' team in this ColumnGroup */}
-                            <Column title="Home" dataIndex="Home" key="Home" sorter= {(a, b) => a.Home.localeCompare(b.Home)}/>
-                            <Column title="Away" dataIndex="Away" key="Away" sorter= {(a, b) => a.Away.localeCompare(b.Away)}/>
-                        </ColumnGroup>
-                        <ColumnGroup title="Goals">
-                            {/* TASK 5: add columns for home and away goals in this ColumnGroup, with the ability to sort values in these columns numerically */}
-                            <Column title="Home" dataIndex="HomeGoals" key="HomeGoals" sorter= {(a, c) => a.Home.localeCompare(c.Goals)}/>
-                            <Column title="Away" dataIndex="AwayGoals" key="AwayGoals" sorter= {(a, c) => a.Away.localeCompare(c.Goals)}/>
-                        </ColumnGroup>
-                        {/* TASK 6: create two columns (independent - not in a column group) for the date and time. Do not add a sorting functionality */}
-                        <Column title="Date" dataIndex="Date" key="Date" />
-                        <Column title="Time" dataIndex="Time" key="Time" />
-                    </Table>
+                <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
+                    <h3>Player Statistics </h3>
+                    <Table dataSource={this.state.statResults} columns={statsColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3}}/>
                 </div>
                 <Divider />
                 {this.state.selectedMatchDetails ? (

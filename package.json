@@ -1,9 +1,13 @@
 {
   "dependencies": {
+    "@os-design/use-resize-observer": "^1.0.4",
     "chart.js": "^3.6.0",
     "chartist": "^0.11.4",
+    "d3": "^7.1.1",
     "react-chartist": "^0.14.4",
     "react-chartjs-2": "^3.3.0",
-    "react-google-charts": "^3.0.15"
+    "react-google-charts": "^3.0.15",
+    "resize-observer-polyfill": "^1.5.1",
+    "use-resize-observer": "^8.0.0"
   }
 }
