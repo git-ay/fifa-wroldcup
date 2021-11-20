@@ -1,7 +1,7 @@
 import React from "react";
 import {Card,} from "react-bootstrap";
 import ChartistGraph from "react-chartist";
-
+//AIzaSyBxpJEv9rYKV-k_uFMZruTIMpLLaVlogio
 import {
     Form,
     FormInput,
@@ -284,10 +284,11 @@ class MatchesPage extends React.Component {
                 ) : null}
                 <Divider />
                 <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
+
                     <Card>
                         <Card.Header>
-                            <Card.Title as="h4">Winning Visualization</Card.Title>
-                            <p className="card-category">Summary</p>
+                            <Card.Title as="h4">Email Statistics</Card.Title>
+                            <p className="card-category">Last Campaign Performance</p>
                         </Card.Header>
                         <Card.Body>
                             <div
@@ -296,8 +297,8 @@ class MatchesPage extends React.Component {
                             >
                                 <ChartistGraph
                                     data={{
-                                        labels: ["70%", "20%", "40%"],
-                                        series: [70, 20, 40],
+                                        labels: ["40%", "20%", "40%"],
+                                        series: [40, 20, 40],
                                     }}
                                     type="Pie"
                                 />
@@ -315,7 +316,6 @@ class MatchesPage extends React.Component {
                             </div>
                         </Card.Body>
                     </Card>
-
                 </div>
             </div>
         );
