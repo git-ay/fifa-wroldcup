@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "chart.js": "^3.6.0",
+    "chartist": "^0.11.4",
     "react-chartist": "^0.14.4",
-    "react-chartjs-2": "^3.3.0"
+    "react-chartjs-2": "^3.3.0",
+    "react-google-charts": "^3.0.15"
   }
 }

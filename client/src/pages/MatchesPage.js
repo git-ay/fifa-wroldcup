@@ -1,7 +1,8 @@
 import React from "react";
 import {Card,} from "react-bootstrap";
 import ChartistGraph from "react-chartist";
-//AIzaSyBxpJEv9rYKV-k_uFMZruTIMpLLaVlogio
+import LineChart from "../components/LineChart";
+
 import {
     Form,
     FormInput,
@@ -21,6 +22,7 @@ import { getMatchSearch, getMatch } from "../fetcher";
 
 
 import MenuBar from "../components/MenuBar";
+import {css} from "@emotion/react";
 const { Option } = Select;
 
 const { Column, ColumnGroup } = Table;
@@ -283,6 +285,9 @@ class MatchesPage extends React.Component {
                     </div>
                 ) : null}
                 <Divider />
+                <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
+                        <LineChart />
+                </div>
                 <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
 
                     <Card>
