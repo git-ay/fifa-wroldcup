@@ -207,6 +207,51 @@ async function all_stats(req, res) {
 
 }
 //---------------------
+
+async function all_matches_stats(req, res) {
+    // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
+    const team_a = req.params.team_a ? req.params.team_a : 'Brazil'
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        // This is the case where page is defined.
+        // The SQL schema has the attribute OverallRating, but modify it to match spec!
+        // TODO: query and return results here:
+        const page = req.query.page
+        const pagesize = req.query.pagesize ? req.query.pagesize : 10
+        const offset = (page * pagesize) - pagesize
+        connection.query(`Select year, Datetime, stage, stadium, Home_Team_Name, Away_Team_Name, home_team_goals, away_team_goals, Attendance
+        From WorldCupMatches
+        Where (Home_Team_Name = '${team_a}' and Away_Team_Name = 'England') or (Home_Team_Name = 'England' and Away_Team_Name = '${team_a}')
+        Order by Datetime asc;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+        // The SQL schema has the attribute OverallRating, but modify it to match spec!
+        // we have implemented this for you to see how to return results by querying the database
+        connection.query(`Select year, Datetime, stage, stadium, Home_Team_Name, Away_Team_Name, home_team_goals, away_team_goals, Attendance
+        From WorldCupMatches
+        Where (Home_Team_Name = '${team_a}' and Away_Team_Name = 'England') or (Home_Team_Name = 'England' and Away_Team_Name = '${team_a}')
+        Order by Datetime asc;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+
+
+}
+//-------------------
 async function all_playerNames(req, res) {
     // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
     if (req.query.page && !isNaN(req.query.page)) {
@@ -455,6 +500,7 @@ module.exports = {
     jersey,
     all_matches,
     all_stats,
+    all_matches_stats,
     all_playerNames,
     all_players,
     match,

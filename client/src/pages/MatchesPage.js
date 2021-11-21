@@ -14,39 +14,64 @@ import {
 } from "shards-react";
 
 
-
-
-
 import { Table, Pagination, Row, Col, Divider, Select } from "antd";
-import {getMatchSearch, getMatch, getAllStats} from "../fetcher";
-
+import {getMatchSearch, getMatch, getAllStats,getAllMatchesStats} from "../fetcher";
 
 import MenuBar from "../components/MenuBar";
-import {css} from "@emotion/react";
 const { Option } = Select;
 
 const { Column, ColumnGroup } = Table;
-const statsColumns = [
+const statsMatchesColumns = [
     {
-        title: 'player',
-        dataIndex: 'player',
-        key: 'player',
+        title: 'Year',
+        dataIndex: 'year',
+        key: 'year',
     },
+    // {
+    //     title: 'Datetime',
+    //     dataIndex: 'Datetime',
+    //     key: 'Datetime',
+    // },
     {
-        title: 'Goals',
-        dataIndex: 'Goals',
-        key: 'Goals',
-    },
-    {
-        title: 'Yellow_Cards',
-        dataIndex: 'Yellow_Cards',
-        key: 'Yellow_Cards',
+        title: 'Stage',
+        dataIndex: 'stage',
+        key: 'stage',
 
     },
     {
-        title: 'Red_Cards',
-        dataIndex: 'Red_Cards',
-        key: 'Red_Cards',
+        title: 'Stadium',
+        dataIndex: 'stadium',
+        key: 'stadium',
+
+    },
+    {
+        title: 'Home Team',
+        dataIndex: 'Home_Team_Name',
+        key: 'Home_Team_Name',
+
+    },
+    {
+        title: 'Away Team',
+        dataIndex: 'Away_Team_Name',
+        key: 'Away_Team_Name',
+
+    },
+    {
+        title: 'Home Team Goals',
+        dataIndex: 'home_team_goals',
+        key: 'home_team_goals',
+
+    },
+    {
+        title: 'Away Team Goals',
+        dataIndex: 'away_team_goals',
+        key: 'away_team_goals',
+
+    },
+    {
+        title: 'Attendance',
+        dataIndex: 'Attendance',
+        key: 'Attendance',
 
     },
 ];
@@ -64,6 +89,7 @@ class MatchesPage extends React.Component {
                 : 0,
             selectedMatchDetails: null,
             statResults: [],
+            statMatchesResults: [],
 
         };
 
@@ -71,6 +97,8 @@ class MatchesPage extends React.Component {
         this.handleHomeQueryChange = this.handleHomeQueryChange.bind(this);
         this.updateSearchResults = this.updateSearchResults.bind(this);
         this.goToMatch = this.goToMatch.bind(this);
+        this.playerOnChange = this.playerOnChange(this)
+        this.matchOnChange = this.matchOnChange(this)
     }
 
     handleAwayQueryChange(event) {
@@ -100,7 +128,19 @@ class MatchesPage extends React.Component {
             this.setState({ statResults: res.results });
 
         });
+
     }
+
+
+    matchOnChange(value) {
+
+        getAllMatchesStats(null, null, value).then((res) => {
+            this.setState({ statMatchesResults: res.results });
+
+        });
+    }
+
+
     componentDidMount() {
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(res => {
             this.setState({ matchesResults: res.results })
@@ -110,9 +150,17 @@ class MatchesPage extends React.Component {
             // TASK 1: set the correct state attribute to res.results
             this.setState({ statResults: res.results })
         })
+
+        getAllMatchesStats(null, null, 'Brazil').then(res => {
+            console.log(res.results)
+            // TASK 1: set the correct state attribute to res.results
+            this.setState({ statMatchesResults: res.results })
+        })
+
         getMatch(this.state.selectedMatchId).then(res => {
             this.setState({ selectedMatchDetails: res.results[0] })
         })
+
 
 
     }
@@ -131,40 +179,41 @@ class MatchesPage extends React.Component {
                     <Row>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
-                                <label>Home Team</label>
-                                <FormInput
-                                    placeholder="Home Team"
-                                    value={this.state.homeQuery}
-                                    onChange={this.handleHomeQueryChange}
-                                />
+                                <label>Home Team   :</label>
+                                <Select defaultValue="Brazil" style={{ width: 150 }} onChange={this.matchOnChange}>
+                                    <Option value="England">England</Option>
+                                    <Option value="Argentina">Argentina</Option>
+                                    <Option value="Spain">Spain</Option>
+                                    <Option value="Germany">Germany</Option>
+                                    <Option value="Italy">Italy</Option>
+                                    <Option value="Uruguay">Uruguay</Option>
+                                </Select>
                             </FormGroup>
                         </Col>
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
-                                <label>Away Team</label>
-                                <FormInput
-                                    placeholder="Away Team"
-                                    value={this.state.awayQuery}
-                                    onChange={this.handleAwayQueryChange}
-                                />
+                                <label>Away Team   :</label>
+                                <Select defaultValue="England" style={{ width: 150 }} onChange={this.matchOnChange}>
+                                    <Option value="England">England</Option>
+                                    <Option value="Spain">Spain</Option>
+                                    <Option value="Uruguay">Uruguay</Option>
+                                    <Option value="Germany">Germany</Option>
+                                    <Option value="Argentina">Argentina</Option>
+                                    <Option value="Italy">Italy</Option>
+                                </Select>
+
                             </FormGroup>
                         </Col>
                         <Col flex={2}>
-                            <FormGroup style={{ width: "10vw" }}>
-                                <Button
-                                    style={{ marginTop: "4vh" }}
-                                    onClick={this.updateSearchResults}
-                                >
-                                    Search
-                                </Button>
-                            </FormGroup>
                         </Col>
                     </Row>
                 </Form>
                 <Divider />
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                    <h3>Player Statistics </h3>
-                    <Table dataSource={this.state.statResults} columns={statsColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 3}}/>
+                    <center>
+                    <h2>Matches History </h2>
+                    </center>
+                    <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
                 </div>
                 <Divider />
                 {this.state.selectedMatchDetails ? (

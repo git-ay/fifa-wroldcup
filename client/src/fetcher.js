@@ -15,6 +15,14 @@ const getAllStats = async (page, pagesize, player) => {
     return res.json()
 }
 
+const getAllMatchesStats = async (page, pagesize, team_a) => {
+    //{player = 'lionel messi'}
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/statsMatches/${team_a}?page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 const getPlayerNames = async (page, pagesize, year) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/playerNames?page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
@@ -60,6 +68,7 @@ const getPlayerSearch = async (name, nationality, club, rating_high, rating_low,
 export {
     getAllMatches,
     getAllStats,
+    getAllMatchesStats,
     getPlayerNames,
     getAllPlayers,
     getMatch,
