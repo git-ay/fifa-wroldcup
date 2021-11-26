@@ -182,10 +182,12 @@ class MatchesPage extends React.Component {
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
                                 <label>Away Team   :</label>
                                 <Select defaultValue="England" style={{ width: 150 }} onChange={this.matchOnChange}>
+                                    <Option value="Brazil">Brazil</Option>
                                     <Option value="England">England</Option>
                                     <Option value="Spain">Spain</Option>
                                     <Option value="Uruguay">Uruguay</Option>
                                     <Option value="Germany">Germany</Option>
+                                    <Option value="Netherlands">Netherlands</Option>
                                     <Option value="Argentina">Argentina</Option>
                                     <Option value="Italy">Italy</Option>
                                 </Select>
