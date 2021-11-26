@@ -129,8 +129,6 @@ class HomePage extends React.Component {
   }
 
   playerOnChange(value) {
-    // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
-    // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
     getAllStats(null, null, value).then((res) => {
       this.setState({ statResults: res.results });
 

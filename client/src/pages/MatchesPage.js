@@ -97,8 +97,7 @@ class MatchesPage extends React.Component {
         this.handleHomeQueryChange = this.handleHomeQueryChange.bind(this);
         this.updateSearchResults = this.updateSearchResults.bind(this);
         this.goToMatch = this.goToMatch.bind(this);
-        this.playerOnChange = this.playerOnChange(this)
-        this.matchOnChange = this.matchOnChange(this)
+        this.matchOnChange = this.matchOnChange.bind(this)
     }
 
     handleAwayQueryChange(event) {
@@ -121,22 +120,11 @@ class MatchesPage extends React.Component {
             }
         );
     }
-    playerOnChange(value) {
-        // TASK 2: this value should be used as a parameter to call getAllMatches in fetcher.js with the parameters page and pageSize set to null
-        // then, matchesResults in state should be set to the results returned - see a similar function call in componentDidMount()
-        getAllStats(null, null, value).then((res) => {
-            this.setState({ statResults: res.results });
-
-        });
-
-    }
 
 
     matchOnChange(value) {
-
         getAllMatchesStats(null, null, value).then((res) => {
             this.setState({ statMatchesResults: res.results });
-
         });
     }
 

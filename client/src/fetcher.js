@@ -16,7 +16,7 @@ const getAllStats = async (page, pagesize, player) => {
 }
 
 const getAllMatchesStats = async (page, pagesize, team_a) => {
-    //{player = 'lionel messi'}
+    //{team_a = 'England'}
     var res = await fetch(`http://${config.server_host}:${config.server_port}/statsMatches/${team_a}?page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
