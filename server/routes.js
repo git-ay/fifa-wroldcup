@@ -316,6 +316,23 @@ async function match(req, res) {
 
 }
 
+async function matchStats(req, res) {
+
+        connection.query(`Select Home_Team_Name, Away_Team_Name, Half_time_Home_Goals, Half_time_Away_Goals, Home_Team_Goals, Away_Team_Goals, Year, Stadium, Stage, Referee
+        from WorldCupMatches
+        Where (Home_Team_Name = 'England' and Away_Team_Name = 'Brazil') or (Home_Team_Name = 'England' and Away_Team_Name = 'Brazil')
+        ORDER BY Year DESC
+        limit 1`, function (error, results, fields) {
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+}
+
 // ********************************************
 //            PLAYER-SPECIFIC ROUTES
 // ********************************************
@@ -504,6 +521,7 @@ module.exports = {
     all_playerNames,
     all_players,
     match,
+    matchStats,
     player,
     search_matches,
     search_players

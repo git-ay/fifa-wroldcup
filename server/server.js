@@ -36,6 +36,9 @@ app.get('/players', routes.all_players)
 // Route 5 - register as GET
 app.get('/match', routes.match)
 
+// Route 5c - register as GET
+app.get('/matchStats', routes.matchStats)
+
 // Route 5b - register as GET
 app.get('/stat', routes.match)
 

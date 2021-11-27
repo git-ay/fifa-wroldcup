@@ -2,6 +2,8 @@ import React from "react";
 import {Card,} from "react-bootstrap";
 import ChartistGraph from "react-chartist";
 import LineChart from "../components/LineChart";
+import CardPic from "../CardPic";
+
 
 import {
     Form,
@@ -15,7 +17,7 @@ import {
 
 
 import { Table, Pagination, Row, Col, Divider, Select } from "antd";
-import {getMatchSearch, getMatch, getAllStats,getAllMatchesStats} from "../fetcher";
+import {getMatchSearch, getMatch, getMatchStats, getAllStats,getAllMatchesStats} from "../fetcher";
 
 import MenuBar from "../components/MenuBar";
 const { Option } = Select;
@@ -27,11 +29,6 @@ const statsMatchesColumns = [
         dataIndex: 'year',
         key: 'year',
     },
-    // {
-    //     title: 'Datetime',
-    //     dataIndex: 'Datetime',
-    //     key: 'Datetime',
-    // },
     {
         title: 'Stage',
         dataIndex: 'stage',
@@ -78,6 +75,7 @@ const statsMatchesColumns = [
 
 
 class MatchesPage extends React.Component {
+    src_home_pic ="";
     constructor(props) {
         super(props);
         this.state = {
@@ -87,13 +85,16 @@ class MatchesPage extends React.Component {
             selectedMatchId: window.location.search
                 ? window.location.search.substring(1).split("=")[1]
                 : 0,
+            matchId: window.location.search
+                ? window.location.search.substring(1).split("=")[1]
+                : 0,
             selectedMatchDetails: null,
+            matchDetails: null,
             statResults: [],
             statMatchesResults: [],
 
         };
 
-        this.handleAwayQueryChange = this.handleAwayQueryChange.bind(this);
         this.handleHomeQueryChange = this.handleHomeQueryChange.bind(this);
         this.updateSearchResults = this.updateSearchResults.bind(this);
         this.goToMatch = this.goToMatch.bind(this);
@@ -105,7 +106,6 @@ class MatchesPage extends React.Component {
     }
 
     handleHomeQueryChange(event) {
-        // TASK 10: update state variables appropriately. See handleAwayQueryChange(event) for reference
         this.setState({ homeQuery: event.target.value });
     }
     goToMatch(matchId) {
@@ -113,7 +113,6 @@ class MatchesPage extends React.Component {
     }
 
     updateSearchResults() {
-        //TASK 11: call getMatchSearch and update matchesResults in state. See componentDidMount() for a hint
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(
             (res) => {
                 this.setState({ matchesResults: res.results });
@@ -149,6 +148,10 @@ class MatchesPage extends React.Component {
             this.setState({ selectedMatchDetails: res.results[0] })
         })
 
+        getMatchStats().then(res => {
+            this.setState({ matchDetails: res.results[0] })
+        })
+
 
 
     }
@@ -160,7 +163,9 @@ class MatchesPage extends React.Component {
 
     render() {
         return (
+
             <div>
+
                 <MenuBar />
 
                 <Form style={{ width: "80vw", margin: "0 auto", marginTop: "5vh" }}>
@@ -206,128 +211,73 @@ class MatchesPage extends React.Component {
                     <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
                 </div>
                 <Divider />
-                {this.state.selectedMatchDetails ? (
+                {this.state.matchDetails ? (
                     <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
                         <Card>
                             <CardBody>
+
                                 <Row gutter="30" align="middle" justify="center">
                                     <Col flex={2} style={{ textAlign: "left" }}>
                                         <CardTitle>
-                                            {this.state.selectedMatchDetails.Home}
+                                            <div align="center"><CardPic
+                                                title='Team'
+                                                imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
+                                                team = {this.state.matchDetails.Home_Team_Name}/>
+                                            </div>
+                                            {/*{this.state.matchDetails.Home_Team_Name}*/}
                                         </CardTitle>
                                     </Col>
                                     <Col flex={2} style={{ textAlign: "center" }}>
-                                        {this.state.selectedMatchDetails.Date} at{" "}
-                                        {this.state.selectedMatchDetails.Time}
+                                        <h4>Year: {this.state.matchDetails.Year}</h4>
                                     </Col>
-                                    {/* TASK 13: Add a column with flex = 2, and text alignment = right to display the name of the away team - similar to column 1 in this row */}
-
                                     <Col flex={2} style={{ textAlign: "right" }}>
+
                                         <CardTitle>
-                                            {this.state.selectedMatchDetails.Away}
+                                            <div align="center"><CardPic
+                                                title='Team'
+                                                imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
+                                                team = {this.state.matchDetails.Away_Team_Name}/>
+                                            </div>
+                                            {/*{this.state.matchDetails.Away_Team_Name}*/}
                                         </CardTitle>
+
                                     </Col>
+
                                 </Row>
+
                                 <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h3>{this.state.selectedMatchDetails.HomeGoals}</h3>
+                                    <Col span={9} style={{ textAlign: "center" }}>
+                                        <h3>{this.state.matchDetails.Home_Team_Goals}</h3>
+
                                     </Col>
                                     <Col span={6} style={{ textAlign: "center" }}>
                                         Goals
                                     </Col>
-                                    {/* TASK 14: Add a column with span = 9, and text alignment = right to display the # of goals the away team scored - similar 1 in this row */}
 
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h3>{this.state.selectedMatchDetails.AwayGoals}</h3>
+                                    <Col span={9} style={{ textAlign: "center" }}>
+                                        <h3>{this.state.matchDetails.Away_Team_Goals}</h3>
                                     </Col>
                                 </Row>
                                  <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h5>{this.state.selectedMatchDetails.HTHomeGoals}</h5>
+                                    <Col span={9} style={{ textAlign: "center" }}>
+                                        <h5>{this.state.matchDetails.Half_time_Home_Goals}</h5>
                                     </Col>
                                     <Col span={6} style={{ textAlign: "center" }}>
                                         Half Time
                                     </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h5>{this.state.selectedMatchDetails.HTAwayGoals}</h5>
+                                    <Col span={9} style={{ textAlign: "center" }}>
+                                        <h5>{this.state.matchDetails.Half_time_Away_Goals}</h5>
                                     </Col>
+                                     <Col flex={2} style={{ textAlign: "center" }}>
+                                         <div><span> &nbsp; </span></div>
+                                         <h6>Stadium: {this.state.matchDetails.Stadium}</h6>
+                                         <h6>Stage: {this.state.matchDetails.Stage}</h6>
+                                         <h6>Referee: {this.state.matchDetails.Referee}</h6>
+                                     </Col>
                                 </Row>
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <Progress
-                                            value={
-                                                (this.state.selectedMatchDetails.ShotsOnTargetHome *
-                                                    100) /
-                                                this.state.selectedMatchDetails.ShotsHome
-                                            }
-                                        >
-                                            {this.state.selectedMatchDetails.ShotsOnTargetHome} /{" "}
-                                            {this.state.selectedMatchDetails.ShotsHome}
-                                        </Progress>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Shot Accuracy
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        {/* TASK 18: add a progress bar to display the shot accuracy for the away team -  look at the progress bar in column 1 of this row for reference*/}
-                                        <Progress
-                                            value={
-                                                (this.state.selectedMatchDetails.ShotsOnTargetAway *
-                                                    100) /
-                                                this.state.selectedMatchDetails.ShotsAway
-                                            }
-                                        >
-                                            {this.state.selectedMatchDetails.ShotsOnTargetAway} /{" "}
-                                            {this.state.selectedMatchDetails.ShotsAway}
-                                        </Progress>
-                                    </Col>
-                                </Row>
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h5>{this.state.selectedMatchDetails.CornersHome}</h5>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Corners
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h5>{this.state.selectedMatchDetails.CornersAway}</h5>
-                                    </Col>
-                                </Row>
-                                {/* TASK 16: add a row for fouls cards - check out the above lines for how we did it for corners */}
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h5>{this.state.selectedMatchDetails.FoulsHome}</h5>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Fouls
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h5>{this.state.selectedMatchDetails.FoulsAway}</h5>
-                                    </Col>
-                                </Row>
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h5>{this.state.selectedMatchDetails.RCHome}</h5>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Red Cards
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h5>{this.state.selectedMatchDetails.RCAway}</h5>
-                                    </Col>
-                                </Row>
-                                {/* TASK 17: add a row for yellow cards - check out the above lines for how we did it for red cards */}
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "left" }}>
-                                        <h5>{this.state.selectedMatchDetails.YCHome}</h5>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Yellow Cards
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "right" }}>
-                                        <h5>{this.state.selectedMatchDetails.YCAway}</h5>
-                                    </Col>
-                                </Row>
+
+
+
                             </CardBody>
                         </Card>
                     </div>

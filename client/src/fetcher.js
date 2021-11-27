@@ -44,6 +44,13 @@ const getMatch = async (id) => {
     return res.json()
 }
 
+const getMatchStats = async (id) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/matchStats`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 const getPlayer = async (id) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/player?id=${id}`, {
         method: 'GET',
@@ -72,6 +79,7 @@ export {
     getPlayerNames,
     getAllPlayers,
     getMatch,
+    getMatchStats,
     getPlayer,
     getMatchSearch,
     getPlayerSearch
