@@ -211,18 +211,22 @@ class MatchesPage extends React.Component {
                     <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
                 </div>
                 <Divider />
+                <center>
+                <h2>Last Game Played</h2>
+                </center>
                 {this.state.matchDetails ? (
                     <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
                         <Card>
                             <CardBody>
-
                                 <Row gutter="30" align="middle" justify="center">
                                     <Col flex={2} style={{ textAlign: "left" }}>
                                         <CardTitle>
-                                            <div align="center"><CardPic
-                                                title='Team'
-                                                imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                team = {this.state.matchDetails.Home_Team_Name}/>
+                                            <div align="center">
+                                                <CardPic
+                                                    title='Team'
+                                                    imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
+                                                    team = {this.state.matchDetails.Home_Team_Name}
+                                                />
                                             </div>
                                             {/*{this.state.matchDetails.Home_Team_Name}*/}
                                         </CardTitle>
@@ -244,7 +248,6 @@ class MatchesPage extends React.Component {
                                     </Col>
 
                                 </Row>
-
                                 <Row gutter="30" align="middle" justify="center">
                                     <Col span={9} style={{ textAlign: "center" }}>
                                         <h3>{this.state.matchDetails.Home_Team_Goals}</h3>
@@ -275,51 +278,20 @@ class MatchesPage extends React.Component {
                                          <h6>Referee: {this.state.matchDetails.Referee}</h6>
                                      </Col>
                                 </Row>
-
-
-
                             </CardBody>
                         </Card>
                     </div>
                 ) : null}
                 <Divider />
-                <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                        <LineChart />
-                </div>
-                <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-
-                    <Card>
-                        <Card.Header>
-                            <Card.Title as="h4">Email Statistics</Card.Title>
-                            <p className="card-category">Last Campaign Performance</p>
-                        </Card.Header>
-                        <Card.Body>
-                            <div
-                                className="ct-chart ct-perfect-fourth"
-                                id="chartPreferences"
-                            >
-                                <ChartistGraph
-                                    data={{
-                                        labels: ["40%", "20%", "40%"],
-                                        series: [40, 20, 40],
-                                    }}
-                                    type="Pie"
-                                />
-                            </div>
-                            <div className="legend">
-                                <i className="fas fa-circle text-info"></i>
-                                Open <i className="fas fa-circle text-danger"></i>
-                                Bounce <i className="fas fa-circle text-warning"></i>
-                                Unsubscribe
-                            </div>
-                            <hr></hr>
-                            <div className="stats">
-                                <i className="far fa-clock"></i>
-                                Campaign sent 2 days ago
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </div>
+                <center>
+                    <h2>Number of Goals throughout Matches History </h2>
+                </center>
+                {this.state.matchDetails ? (
+                    <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
+                            <LineChart
+                                team = {this.state.matchDetails.Away_Team_Name} />
+                    </div>
+                ) : null}
             </div>
         );
     }

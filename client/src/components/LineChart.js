@@ -1,7 +1,8 @@
 import React from "react";
 import {Line} from 'react-chartjs-2'
 
-function LineChart(){
+function LineChart({team}){
+    //var a = data_src[0]
 
     const data = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
@@ -43,7 +44,7 @@ function LineChart(){
 
         }
     }
-    return (<Line data={data} options={options}/> )
+    return (<div> aa{team}bb <Line data={data} options={options}/> </div>)
 
 }
 
