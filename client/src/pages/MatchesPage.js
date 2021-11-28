@@ -1,28 +1,23 @@
 import React from "react";
 import {Card,} from "react-bootstrap";
-import ChartistGraph from "react-chartist";
 import LineChart from "../components/LineChart";
 import CardPic from "../CardPic";
-
+import {Button} from "../components/Button";
 
 import {
     Form,
-    FormInput,
     FormGroup,
-    Button,
     CardBody,
     CardTitle,
-    Progress,
 } from "shards-react";
 
 
-import { Table, Pagination, Row, Col, Divider, Select } from "antd";
+import { Table, Row, Col, Divider, Select } from "antd";
 import {getMatchSearch, getMatch, getMatchStats, getAllStats,getAllMatchesStats} from "../fetcher";
 
 import MenuBar from "../components/MenuBar";
 const { Option } = Select;
 
-const { Column, ColumnGroup } = Table;
 const statsMatchesColumns = [
     {
         title: 'Year',
@@ -75,7 +70,6 @@ const statsMatchesColumns = [
 
 
 class MatchesPage extends React.Component {
-    src_home_pic ="";
     constructor(props) {
         super(props);
         this.state = {
@@ -132,6 +126,7 @@ class MatchesPage extends React.Component {
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(res => {
             this.setState({ matchesResults: res.results })
         })
+
         getAllStats(null, null, 'cristiano ronaldo').then(res => {
             console.log(res.results)
             // TASK 1: set the correct state attribute to res.results
@@ -200,9 +195,13 @@ class MatchesPage extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col flex={2}>
+                            <div className="App" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
+                                <Button>Select Teams</Button>
+                            </div>
                         </Col>
                     </Row>
                 </Form>
+
                 <Divider />
                 <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
                     <center>

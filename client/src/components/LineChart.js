@@ -8,7 +8,7 @@ function LineChart({team}){
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
         datasets: [
             {
-                label: 'Sales 2020',
+                label: 'Brzil',
                 data: [3,2,2,1,5],
                 borderColor: ['rgba(255,206,86,0.2)'],
                 backgroundColor: ['rgba(255,206,86,0.2)'],
@@ -17,7 +17,7 @@ function LineChart({team}){
 
             },
             {
-                label: 'Sales 2021',
+                label: 'England',
                 data: [4,1,6,8,11],
                 borderColor: ['rgba(54,206,86,0.2)'],
                 backgroundColor: ['rgba(54,206,86,0.2)'],
