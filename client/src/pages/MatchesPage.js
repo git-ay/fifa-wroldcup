@@ -196,7 +196,11 @@ class MatchesPage extends React.Component {
                         </Col>
                         <Col flex={2}>
                             <div className="App" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                                <Button>Select Teams</Button>
+                                <Button onClick={(console.log("You clicked on me"))}
+                                type="button"
+                                buttonStyle="btn--primary-outline"
+                                buttonSize= "btn-medium"
+                                >Select Teams</Button>
                             </div>
                         </Col>
                     </Row>
