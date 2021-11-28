@@ -144,9 +144,7 @@ class MatchesPage extends React.Component {
             this.setState({ statResults: res.results })
         })
 
-        getAllMatchesStats(null, null, 'Brazil').then(res => {
-            console.log(res.results)
-            // TASK 1: set the correct state attribute to res.results
+        getAllMatchesStats(null, null, 'Brazil', 'England').then(res => {
             this.setState({ statMatchesResults: res.results })
         })
 

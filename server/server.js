@@ -25,7 +25,7 @@ app.get('/matches/:league', routes.all_matches)
 app.get('/stats/:player', routes.all_stats)
 
 // Route 3c - register as GET
-app.get('/statsMatches/:team_a', routes.all_matches_stats)
+app.get('/statsMatches/teams', routes.all_matches_stats)
 
 // Route 3c - register as GET
 app.get('/playerNames', routes.all_playerNames)
