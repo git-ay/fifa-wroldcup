@@ -98,8 +98,8 @@ class MatchesPage extends React.Component {
         this.state = {
             homeTeam: "Brazil",
             awayTeam: "England",
-            homeTeamGoals: [],
-            awayTeamGoals: [],
+            homeTeamGoals: [0,3,1,1],
+            awayTeamGoals: [0,1,0,2],
             matchesResults: [],
             selectedMatchId: window.location.search
                 ? window.location.search.substring(1).split("=")[1]
@@ -140,24 +140,26 @@ class MatchesPage extends React.Component {
 
     setHomeTeam(team_home){
         this.state.homeTeam = team_home
-    }
+           }
 
     setAwayTeam(team_away){
         this.state.awayTeam = team_away
     }
 
+
     matchOnChangeTeams() {
         getAllMatchesStats(null, null,  this.state.homeTeam, this.state.awayTeam).then((res) => {
             this.setState({ statMatchesResults: res.results });
+            this.state.homeTeamGoals = get_goals(this.state.statMatchesResults, "home");
+            this.state.awayTeamGoals = get_goals(this.state.statMatchesResults, "away");
+            this.state.list_of_years = get_years(this.state.statMatchesResults)
+
         });
     }
 
 
 
     componentDidMount() {
-        getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(res => {
-            this.setState({ matchesResults: res.results })
-        })
 
         getAllStats(null, null, 'cristiano ronaldo').then(res => {
             this.setState({ statResults: res.results })
@@ -167,12 +169,12 @@ class MatchesPage extends React.Component {
             this.setState({ statMatchesResults: res.results })
         })
 
-        getMatch(this.state.selectedMatchId).then(res => {
-            this.setState({ selectedMatchDetails: res.results[0] })
-        })
-
         getMatchStats().then(res => {
             this.setState({ matchDetails: res.results[0] })
+            console.log("XX")
+            this.state.list_of_years = get_years(this.state.statMatchesResults)
+            console.log(this.state.list_of_years)
+            console.log("YY")
         })
 
     }
@@ -182,9 +184,7 @@ class MatchesPage extends React.Component {
     }
 
     render() {
-        {this.state.list_of_years = get_years(this.state.statMatchesResults)}
-        {this.state.homeTeamGoals = get_goals(this.state.statMatchesResults, "home")}
-        {this.state.awayTeamGoals = get_goals(this.state.statMatchesResults, "away")}
+
 
         return (
 
@@ -318,16 +318,17 @@ class MatchesPage extends React.Component {
                 <center>
                     <h2>Number of Goals throughout Matches History </h2>
                 </center>
-
+                {}
                 {this.state.matchDetails ? (
                     <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-
+                        {console.log(this.state.list_of_years)}
                         <LineChart
                             home_team={this.state.homeTeam}
                             away_team={this.state.awayTeam}
                             home_goals={this.state.homeTeamGoals}
                             away_goals={this.state.awayTeamGoals}
-                            years = {this.state.list_of_years}
+                            years={this.state.list_of_years}
+
                         />
                     </div>
                 ) : null}

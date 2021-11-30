@@ -6,14 +6,11 @@ import {
     Button,
     Card,
     CardBody,
-    CardTitle,
     Progress,
 } from "shards-react";
 
 import {
     Table,
-    Pagination,
-    Select,
     Row,
     Col,
     Divider,

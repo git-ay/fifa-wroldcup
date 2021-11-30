@@ -1,9 +1,8 @@
 import React from "react";
 import {Line} from 'react-chartjs-2'
 
-function LineChart({years, home_team, away_team, home_goals, away_goals}){
+function LineChart({home_team, away_team, home_goals, away_goals, years}){
     //var a = data_src[0]
-    console.log(home_goals)
     const data = {
         labels: years,
         datasets: [
@@ -44,7 +43,7 @@ function LineChart({years, home_team, away_team, home_goals, away_goals}){
 
         }
     }
-    return (<div> <Line data={data} options={options}/> </div>)
+    return (<div>  <Line data={data} options={options}/> </div>)
 
 }
 
