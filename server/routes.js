@@ -59,19 +59,9 @@ async function jersey(req, res) {
 
 // Route 3 (handler)
 async function all_matches(req, res) {
-    // TODO: TASK 4: implement and test, potentially writing your own (ungraded) tests
-    // We have partially implemented this function for you to 
-    // parse in the league encoding - this is how you would use the ternary operator to set a variable to a default value
-    // we didn't specify this default value for league, and you could change it if you want! 
     const league = req.params.league ? req.params.league : 'D1'
 
-
-    // use this league encoding in your query to furnish the correct results
-
      if (req.query.page && !isNaN(req.query.page)) {
-        // This is the case where page is defined.
-        // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-        // TODO: query and return results here:
         pag = req.query.page
         pag_size = req.query.pagesize
         connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals  
@@ -89,8 +79,6 @@ async function all_matches(req, res) {
         });
 
     } else {
-        // The SQL schema has the attribute OverallRating, but modify it to match spec! 
-        // we have implemented this for you to see how to return results by querying the database
         connection.query(`SELECT MatchId, Date, Time, HomeTeam AS Home, AwayTeam AS Away, FullTimeGoalsH AS HomeGoals, FullTimeGoalsA AS AwayGoals  
         FROM Matches 
         WHERE Division = '${league}'
@@ -212,7 +200,7 @@ async function all_matches_stats(req, res) {
         connection.query(`Select year, Datetime, stage, stadium, Home_Team_Name, Away_Team_Name, home_team_goals, away_team_goals, Attendance
         From WorldCupMatches
         Where (Home_Team_Name = '${team_home}' and Away_Team_Name = '${team_away}') or (Home_Team_Name = '${team_away}' and Away_Team_Name = '${team_home}')
-        Order by Datetime asc;`, function (error, results, fields) {
+        Order by year asc;`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
@@ -226,7 +214,7 @@ async function all_matches_stats(req, res) {
         connection.query(`Select year, Datetime, stage, stadium, Home_Team_Name, Away_Team_Name, home_team_goals, away_team_goals, Attendance
         From WorldCupMatches
         Where (Home_Team_Name = '${team_home}' and Away_Team_Name = '${team_away}') or (Home_Team_Name = '${team_away}' and Away_Team_Name = '${team_home}')
-        Order by Datetime asc;`, function (error, results, fields) {
+        Order by year asc;`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)

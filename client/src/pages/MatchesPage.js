@@ -4,6 +4,7 @@ import LineChart from "../components/LineChart";
 import CardPic from "../CardPic";
 import {Button} from "../components/Button";
 
+
 import {
     Form,
     FormGroup,
@@ -69,14 +70,36 @@ const statsMatchesColumns = [
 ];
 
 
+function get_years(statMatchesResults) {
+    let i = 0;
+    let list_of_years = [];
+    while (i<statMatchesResults.length){
+        let year = statMatchesResults[i]['year'];
+        i++;
+        list_of_years.push(year)
+    }
+    return list_of_years;
+}
+
+function get_goals(statMatchesResults, team) {
+    let i = 0;
+    let goals = [];
+    while (i<statMatchesResults.length){
+        let goal = statMatchesResults[i][team+'_team_goals'];
+        i++;
+        goals.push(goal)
+    }
+    return goals;
+}
+
 class MatchesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            awayQuery: "",
-            homeQuery: "",
             homeTeam: "Brazil",
             awayTeam: "England",
+            homeTeamGoals: [],
+            awayTeamGoals: [],
             matchesResults: [],
             selectedMatchId: window.location.search
                 ? window.location.search.substring(1).split("=")[1]
@@ -88,6 +111,8 @@ class MatchesPage extends React.Component {
             matchDetails: null,
             statResults: [],
             statMatchesResults: [],
+            list_of_years: [],
+
 
         };
 
@@ -105,10 +130,6 @@ class MatchesPage extends React.Component {
         this.setState({ homeQuery: event.target.value });
     }
 
-    goToMatch(matchId) {
-        window.location = `/matches?id=${matchId}`
-    }
-
     updateSearchResults() {
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(
             (res) => {
@@ -122,12 +143,10 @@ class MatchesPage extends React.Component {
     }
 
     setAwayTeam(team_away){
-        console.log(team_away)
         this.state.awayTeam = team_away
     }
 
     matchOnChangeTeams() {
-        console.log("AAA")
         getAllMatchesStats(null, null,  this.state.homeTeam, this.state.awayTeam).then((res) => {
             this.setState({ statMatchesResults: res.results });
         });
@@ -141,8 +160,6 @@ class MatchesPage extends React.Component {
         })
 
         getAllStats(null, null, 'cristiano ronaldo').then(res => {
-            console.log(res.results)
-            // TASK 1: set the correct state attribute to res.results
             this.setState({ statResults: res.results })
         })
 
@@ -158,20 +175,20 @@ class MatchesPage extends React.Component {
             this.setState({ matchDetails: res.results[0] })
         })
 
-
-
     }
 
     goToMatch(matchId) {
         window.location = `/matches?id=${matchId}`
     }
 
-
     render() {
+        {this.state.list_of_years = get_years(this.state.statMatchesResults)}
+        {this.state.homeTeamGoals = get_goals(this.state.statMatchesResults, "home")}
+        {this.state.awayTeamGoals = get_goals(this.state.statMatchesResults, "away")}
+
         return (
 
             <div>
-
                 <MenuBar />
 
                 <Form style={{ width: "80vw", margin: "0 auto", marginTop: "5vh" }}>
@@ -245,7 +262,6 @@ class MatchesPage extends React.Component {
                                                     team = {this.state.homeTeam}
                                                 />
                                             </div>
-                                            {/*{this.state.matchDetails.Home_Team_Name}*/}
                                         </CardTitle>
                                     </Col>
                                     <Col flex={2} style={{ textAlign: "center" }}>
@@ -302,10 +318,17 @@ class MatchesPage extends React.Component {
                 <center>
                     <h2>Number of Goals throughout Matches History </h2>
                 </center>
+
                 {this.state.matchDetails ? (
                     <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                            <LineChart
-                                team = {this.state.matchDetails.Away_Team_Name} />
+
+                        <LineChart
+                            home_team={this.state.homeTeam}
+                            away_team={this.state.awayTeam}
+                            home_goals={this.state.homeTeamGoals}
+                            away_goals={this.state.awayTeamGoals}
+                            years = {this.state.list_of_years}
+                        />
                     </div>
                 ) : null}
             </div>
