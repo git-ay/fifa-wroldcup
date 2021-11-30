@@ -201,11 +201,8 @@ async function all_stats(req, res) {
 //---------------------
 
 async function all_matches_stats(req, res) {
-
-    console.log(req.query)
-
     const team_home = req.query.home ? req.query.home : 'Brazil'
-    const team_away = req.query.israel ? req.query.israel : 'England'
+    const team_away = req.query.away ? req.query.away : 'England'
 
     if (req.query.page && !isNaN(req.query.page)) {
         // This is the case where page is defined.

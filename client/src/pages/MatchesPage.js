@@ -75,8 +75,8 @@ class MatchesPage extends React.Component {
         this.state = {
             awayQuery: "",
             homeQuery: "",
-            homeTeam: "",
-            awayTeam: "",
+            homeTeam: "Brazil",
+            awayTeam: "England",
             matchesResults: [],
             selectedMatchId: window.location.search
                 ? window.location.search.substring(1).split("=")[1]
@@ -242,7 +242,7 @@ class MatchesPage extends React.Component {
                                                 <CardPic
                                                     title='Team'
                                                     imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                    team = {this.state.matchDetails.Home_Team_Name}
+                                                    team = {this.state.homeTeam}
                                                 />
                                             </div>
                                             {/*{this.state.matchDetails.Home_Team_Name}*/}
@@ -257,9 +257,8 @@ class MatchesPage extends React.Component {
                                             <div align="center"><CardPic
                                                 title='Team'
                                                 imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                team = {this.state.matchDetails.Away_Team_Name}/>
+                                                team = {this.state.awayTeam}/>
                                             </div>
-                                            {/*{this.state.matchDetails.Away_Team_Name}*/}
                                         </CardTitle>
 
                                     </Col>
