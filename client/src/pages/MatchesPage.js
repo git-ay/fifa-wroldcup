@@ -117,12 +117,19 @@ class MatchesPage extends React.Component {
         );
     }
 
+    setHomeTeam(team_home){
+        this.state.homeTeam = team_home
+    }
 
-    matchOnChangeTeams(team_home, team_away ) {
-        getAllMatchesStats(null, null, team_home, team_away).then((res) => {
+    setAwayTeam(team_away){
+        console.log(team_away)
+        this.state.awayTeam = team_away
+    }
+
+    matchOnChangeTeams() {
+        console.log("AAA")
+        getAllMatchesStats(null, null,  this.state.homeTeam, this.state.awayTeam).then((res) => {
             this.setState({ statMatchesResults: res.results });
-            this.state.homeTeam = team_home
-            this.state.awayTeam = team_away
         });
     }
 
@@ -172,7 +179,9 @@ class MatchesPage extends React.Component {
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
                                 <label>Home Team   :</label>
-                                <Select defaultValue="Brazil" style={{ width: 150 }} onChange={this.matchOnChangeTeams}>
+                                <Select defaultValue="Brazil" style={{ width: 150 }} onChange={(e) => {
+                                   this.setHomeTeam(e)
+                                }}>
                                     <Option value="England">England</Option>
                                     <Option value="Argentina">Argentina</Option>
                                     <Option value="Spain">Spain</Option>
@@ -183,9 +192,10 @@ class MatchesPage extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col flex={2}>
-                            <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
+                            <FormGroup style={{ width: "20vw", margin: "0 auto"}}>
                                 <label>Away Team   :</label>
-                                <Select defaultValue="England" style={{ width: 150 }} onChange={this.matchOnChangeTeams}>
+                                <Select defaultValue="England" style={{ width: 150 }}  onChange={(e) => {
+                                    this.setAwayTeam(e)}}>
                                     <Option value="Brazil">Brazil</Option>
                                     <Option value="England">England</Option>
                                     <Option value="Spain">Spain</Option>
@@ -200,7 +210,7 @@ class MatchesPage extends React.Component {
                         </Col>
                         <Col flex={2}>
                             <div className="App" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                                <Button onClick={(console.log("You clicked on me"))}
+                                <Button onClick={this.matchOnChangeTeams}
                                 type="button"
                                 buttonStyle="btn--primary-outline"
                                 buttonSize= "btn-medium"
