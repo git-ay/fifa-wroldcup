@@ -2,7 +2,6 @@ import React from "react";
 import {Line} from 'react-chartjs-2'
 
 function LineChart({home_team, away_team, home_goals, away_goals, years}){
-    //var a = data_src[0]
     const data = {
         labels: years,
         datasets: [
