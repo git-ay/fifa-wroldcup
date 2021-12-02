@@ -1,0 +1,18 @@
+
+/* Clear floats after image containers */
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 0.33%;
+    padding: 15px;
+
+}
+

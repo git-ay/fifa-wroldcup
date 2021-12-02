@@ -15,6 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css"
 import MatchesPage from './pages/MatchesPage';
 import IntroPage from "./pages/IntroPage";
+import TeamPage from "./pages/TeamPage";
 
 ReactDOM.render(
   <div>
@@ -42,7 +43,10 @@ ReactDOM.render(
 				   				<IntroPage />
 			   				)}/>
 
-
+		  <Route exact		path="/TeamPage"
+				 			render={() => (
+					 			<TeamPage />
+				 			)}/>
 
       </Switch>
     </Router>
