@@ -1,15 +1,13 @@
 import React from "react";
 import {Line} from 'react-chartjs-2'
 
-function LineChart({team}){
-    //var a = data_src[0]
-
+function LineChart({home_team, away_team, home_goals, away_goals, years}){
     const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+        labels: years,
         datasets: [
             {
-                label: 'Brzil',
-                data: [3,2,2,1,5],
+                label: home_team,
+                data: home_goals,
                 borderColor: ['rgba(255,206,86,0.2)'],
                 backgroundColor: ['rgba(255,206,86,0.2)'],
                 pointBackgroundColor: 'rgba(255,206,86,0.2)',
@@ -17,8 +15,8 @@ function LineChart({team}){
 
             },
             {
-                label: 'England',
-                data: [4,1,6,8,11],
+                label: away_team,
+                data: away_goals,
                 borderColor: ['rgba(54,206,86,0.2)'],
                 backgroundColor: ['rgba(54,206,86,0.2)'],
                 pointBackgroundColor: 'rgba(54,206,86,0.2)',
@@ -44,7 +42,7 @@ function LineChart({team}){
 
         }
     }
-    return (<div> aa{team}bb <Line data={data} options={options}/> </div>)
+    return (<div>  <Line data={data} options={options}/> </div>)
 
 }
 

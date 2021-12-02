@@ -5,6 +5,7 @@ import CardPic from "../CardPic";
 import {Button} from "../components/Button";
 import { Chart as ChartJS } from 'chart.js/auto' // Alex: This line is required to avoid an error (Error: "category" is not a registered scale).
 
+
 import {
     Form,
     FormGroup,
@@ -70,14 +71,36 @@ const statsMatchesColumns = [
 ];
 
 
+function get_years(statMatchesResults) {
+    let i = 0;
+    let list_of_years = [];
+    while (i<statMatchesResults.length){
+        let year = statMatchesResults[i]['year'];
+        i++;
+        list_of_years.push(year)
+    }
+    return list_of_years;
+}
+
+function get_goals(statMatchesResults, team) {
+    let i = 0;
+    let goals = [];
+    while (i<statMatchesResults.length){
+        let goal = statMatchesResults[i][team+'_team_goals'];
+        i++;
+        goals.push(goal)
+    }
+    return goals;
+}
+
 class MatchesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            awayQuery: "",
-            homeQuery: "",
-            homeTeam: "",
-            awayTeam: "",
+            homeTeam: "Brazil",
+            awayTeam: "England",
+            homeTeamGoals: [0,3,1,1],
+            awayTeamGoals: [0,1,0,2],
             matchesResults: [],
             selectedMatchId: window.location.search
                 ? window.location.search.substring(1).split("=")[1]
@@ -89,6 +112,8 @@ class MatchesPage extends React.Component {
             matchDetails: null,
             statResults: [],
             statMatchesResults: [],
+            list_of_years: [],
+
 
         };
 
@@ -106,10 +131,6 @@ class MatchesPage extends React.Component {
         this.setState({ homeQuery: event.target.value });
     }
 
-    goToMatch(matchId) {
-        window.location = `/matches?id=${matchId}`
-    }
-
     updateSearchResults() {
         getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(
             (res) => {
@@ -118,25 +139,30 @@ class MatchesPage extends React.Component {
         );
     }
 
+    setHomeTeam(team_home){
+        this.state.homeTeam = team_home
+           }
 
-    matchOnChangeTeams(team_home, team_away ) {
-        getAllMatchesStats(null, null, team_home, team_away).then((res) => {
+    setAwayTeam(team_away){
+        this.state.awayTeam = team_away
+    }
+
+
+    matchOnChangeTeams() {
+        getAllMatchesStats(null, null,  this.state.homeTeam, this.state.awayTeam).then((res) => {
             this.setState({ statMatchesResults: res.results });
-            this.state.homeTeam = team_home
-            this.state.awayTeam = team_away
+            this.state.homeTeamGoals = get_goals(this.state.statMatchesResults, "home");
+            this.state.awayTeamGoals = get_goals(this.state.statMatchesResults, "away");
+            this.state.list_of_years = get_years(this.state.statMatchesResults)
+
         });
     }
 
 
 
     componentDidMount() {
-        getMatchSearch(this.state.homeQuery, this.state.awayQuery, null, null).then(res => {
-            this.setState({ matchesResults: res.results })
-        })
 
         getAllStats(null, null, 'cristiano ronaldo').then(res => {
-            console.log(res.results)
-            // TASK 1: set the correct state attribute to res.results
             this.setState({ statResults: res.results })
         })
 
@@ -144,15 +170,10 @@ class MatchesPage extends React.Component {
             this.setState({ statMatchesResults: res.results })
         })
 
-        getMatch(this.state.selectedMatchId).then(res => {
-            this.setState({ selectedMatchDetails: res.results[0] })
-        })
-
         getMatchStats().then(res => {
             this.setState({ matchDetails: res.results[0] })
+
         })
-
-
 
     }
 
@@ -160,12 +181,15 @@ class MatchesPage extends React.Component {
         window.location = `/matches?id=${matchId}`
     }
 
-
     render() {
+
+        {this.state.list_of_years = get_years(this.state.statMatchesResults);
+            this.state.homeTeamGoals = get_goals(this.state.statMatchesResults, "home");
+            this.state.awayTeamGoals = get_goals(this.state.statMatchesResults, "away");
+            console.log(this.state.list_of_years)}
         return (
 
             <div>
-
                 <MenuBar />
 
                 <Form style={{ width: "80vw", margin: "0 auto", marginTop: "5vh" }}>
@@ -173,7 +197,9 @@ class MatchesPage extends React.Component {
                         <Col flex={2}>
                             <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
                                 <label>Home Team   :</label>
-                                <Select defaultValue="Brazil" style={{ width: 150 }} onChange={this.matchOnChangeTeams}>
+                                <Select defaultValue="Brazil" style={{ width: 150 }} onChange={(e) => {
+                                   this.setHomeTeam(e)
+                                }}>
                                     <Option value="England">England</Option>
                                     <Option value="Argentina">Argentina</Option>
                                     <Option value="Spain">Spain</Option>
@@ -184,9 +210,10 @@ class MatchesPage extends React.Component {
                             </FormGroup>
                         </Col>
                         <Col flex={2}>
-                            <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
+                            <FormGroup style={{ width: "20vw", margin: "0 auto"}}>
                                 <label>Away Team   :</label>
-                                <Select defaultValue="England" style={{ width: 150 }} onChange={this.matchOnChangeTeams}>
+                                <Select defaultValue="England" style={{ width: 150 }}  onChange={(e) => {
+                                    this.setAwayTeam(e)}}>
                                     <Option value="Brazil">Brazil</Option>
                                     <Option value="England">England</Option>
                                     <Option value="Spain">Spain</Option>
@@ -201,7 +228,7 @@ class MatchesPage extends React.Component {
                         </Col>
                         <Col flex={2}>
                             <div className="App" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                                <Button onClick={(console.log("You clicked on me"))}
+                                <Button onClick={this.matchOnChangeTeams}
                                 type="button"
                                 buttonStyle="btn--primary-outline"
                                 buttonSize= "btn-medium"
@@ -233,10 +260,9 @@ class MatchesPage extends React.Component {
                                                 <CardPic
                                                     title='Team'
                                                     imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                    team = {this.state.matchDetails.Home_Team_Name}
+                                                    team = {this.state.homeTeam}
                                                 />
                                             </div>
-                                            {/*{this.state.matchDetails.Home_Team_Name}*/}
                                         </CardTitle>
                                     </Col>
                                     <Col flex={2} style={{ textAlign: "center" }}>
@@ -248,9 +274,8 @@ class MatchesPage extends React.Component {
                                             <div align="center"><CardPic
                                                 title='Team'
                                                 imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                team = {this.state.matchDetails.Away_Team_Name}/>
+                                                team = {this.state.awayTeam}/>
                                             </div>
-                                            {/*{this.state.matchDetails.Away_Team_Name}*/}
                                         </CardTitle>
 
                                     </Col>
@@ -294,12 +319,16 @@ class MatchesPage extends React.Component {
                 <center>
                     <h2>Number of Goals throughout Matches History </h2>
                 </center>
-                {this.state.matchDetails ? (
                     <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                            <LineChart
-                                team = {this.state.matchDetails.Away_Team_Name} />
+                        <LineChart
+                            home_team={this.state.homeTeam}
+                            away_team={this.state.awayTeam}
+                            home_goals={this.state.homeTeamGoals}
+                            away_goals={this.state.awayTeamGoals}
+                            years={this.state.list_of_years}
+
+                        />
                     </div>
-                ) : null}
             </div>
         );
     }

@@ -16,9 +16,7 @@ const getAllStats = async (page, pagesize, player) => {
 }
 
 const getAllMatchesStats = async (page, pagesize, team_home, team_away) => {
-    // {team_home = 'Brazil'}
-    // {team_away = 'England'}
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/statsMatches/teams?home=${team_home}&away=${team_away}?page=${page}&pagesize=${pagesize}`, {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/statsMatches/teams?home=${team_home}&away=${team_away}&page=${page}&pagesize=${pagesize}`, {
             method: 'GET',
     })
     return res.json()
