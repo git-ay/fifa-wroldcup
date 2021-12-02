@@ -1,24 +1,9 @@
 import React from 'react';
-
-import {
-  Table,
-  Select, Row, Col, Divider
-} from 'antd'
-
-
-
+import {Divider} from 'antd'
 import MenuBar from '../components/MenuBar';
 import {getAllStats, getAllMatches, getAllPlayers, getPlayerNames} from '../fetcher'
 import CardTeam from "../components/CardTeam";
 import Item from "antd/es/list/Item";
-const { Column, ColumnGroup } = Table;
-const { Option } = Select;
-
-
-
-
-
-
 
 
 class HomePage extends React.Component {
@@ -103,9 +88,6 @@ class HomePage extends React.Component {
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }} align="center">
             <h3>Choose Team </h3>
-            <div>
-                  <Item><CardTeam team={'Afghanistan'}/></Item>
-            </div>
           </div>
           <Divider />
           <div className="row" align="center">
@@ -125,8 +107,44 @@ class HomePage extends React.Component {
               <Item><CardTeam team={'Italy'}/></Item>
             </div>
             <div className="column">
-              <Item><CardTeam team={'Argentina'}/></Item>
+              <Item><CardTeam team={'Angola'}/></Item>
             </div>
+            <div className="column">
+              <Item><CardTeam team={'Chile'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Finland'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Japan'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Mexico'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Peru'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Morocco'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Slovenia'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Spain'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Nigeria'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Paraguay'}/></Item>
+            </div>
+            <div className="column">
+              <Item><CardTeam team={'Austria'}/></Item>
+            </div>
+
+
+
           </div>
 
         </div>

@@ -8,11 +8,13 @@
 
 .row {
     display: flex;
+    padding: 15px;
 }
 
 .column {
-    flex: 0.33%;
+    flex: 2.33%;
     padding: 15px;
+
 
 }
 
