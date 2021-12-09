@@ -7,6 +7,7 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import './CardTeam.css'
 
 
+
 export default function CardTeam(team) {
     return (
         <Card sx={{ maxWidth: 200 }}>
@@ -24,7 +25,7 @@ export default function CardTeam(team) {
                 </CardContent>
             </CardActionArea>
                 <CardActions justify="center">
-                        <Button size="large" color="primary">
+                        <Button  size="large" color="primary">
                             SELECT
                         </Button>
                 </CardActions>

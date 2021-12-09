@@ -132,13 +132,9 @@ async function all_players(req, res) {
 //------- 4b exp ------
 
 async function all_stats(req, res) {
-    // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
     const player = req.params.player ? req.params.player : 'cristiano ronaldo'
 
     if (req.query.page && !isNaN(req.query.page)) {
-        // This is the case where page is defined.
-        // The SQL schema has the attribute OverallRating, but modify it to match spec!
-        // TODO: query and return results here:
         const page = req.query.page
         const pagesize = req.query.pagesize ? req.query.pagesize : 10
         const offset = (page * pagesize) - pagesize
