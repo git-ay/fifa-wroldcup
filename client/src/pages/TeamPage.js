@@ -97,7 +97,7 @@ class HomePage extends React.Component {
           </div>
           <Divider />
           <div className="row" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-            <div className="column" >
+            <div className="column">
               <Item><CardTeam team={'Afghanistan'}/></Item>
             </div>
             <div className="column">
@@ -151,7 +151,8 @@ class HomePage extends React.Component {
             <Divider />
             <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
               <center>
-                <h2>Matches History </h2>
+                <h2>Top Scorers </h2>
+                <h4>selected team</h4>
               </center>
               <Divider />
               <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>

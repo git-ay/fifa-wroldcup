@@ -224,6 +224,63 @@ async function all_matches_stats(req, res) {
 
 }
 //-------------------
+async function all_best_scorers(req, res) {
+    const team = req.query.team ? req.query.team : 'Brazil'
+
+    if (req.query.page && !isNaN(req.query.page)) {
+        // This is the case where page is defined.
+        const page = req.query.page
+        const pagesize = req.query.pagesize ? req.query.pagesize : 10
+        const offset = (page * pagesize) - pagesize
+        connection.query(`
+        WITH distinct_matches AS (
+            SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
+            Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
+            From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
+                WHERE WCS.Team_Name = @team
+                Group By MatchID, WCP.Player_Name, WCS.Team_Name
+                ORDER BY Goals_Count DESC)
+        SELECT Player_Name, SUM(Goals_Count) AS Goals
+        FROM distinct_matches
+        GROUP BY Player_Name, Team_Name
+        ORDER BY SUM(Goals_Count) DESC
+        LIMIT 10;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+        connection.query(`WITH distinct_matches AS (
+            SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
+            Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
+            From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
+                WHERE WCS.Team_Name = @team
+                Group By MatchID, WCP.Player_Name, WCS.Team_Name
+                ORDER BY Goals_Count DESC)
+        SELECT Player_Name, SUM(Goals_Count) AS Goals
+        FROM distinct_matches
+        GROUP BY Player_Name, Team_Name
+        ORDER BY SUM(Goals_Count) DESC
+        LIMIT 10;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+
+
+}
+
+//-------------------
 async function all_playerNames(req, res) {
     // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
     if (req.query.page && !isNaN(req.query.page)) {
@@ -490,6 +547,7 @@ module.exports = {
     all_matches,
     all_stats,
     all_matches_stats,
+    all_best_scorers,
     all_playerNames,
     all_players,
     match,
