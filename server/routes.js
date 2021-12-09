@@ -225,8 +225,8 @@ async function all_matches_stats(req, res) {
 }
 //-------------------
 async function all_best_scorers(req, res) {
+    console.log("aaaa")
     const team = req.query.team ? req.query.team : 'Brazil'
-
     if (req.query.page && !isNaN(req.query.page)) {
         // This is the case where page is defined.
         const page = req.query.page
@@ -237,7 +237,7 @@ async function all_best_scorers(req, res) {
             SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
             Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
             From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
-                WHERE WCS.Team_Name = @team
+                WHERE WCS.Team_Name = '${team}'
                 Group By MatchID, WCP.Player_Name, WCS.Team_Name
                 ORDER BY Goals_Count DESC)
         SELECT Player_Name, SUM(Goals_Count) AS Goals
@@ -259,7 +259,7 @@ async function all_best_scorers(req, res) {
             SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
             Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
             From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
-                WHERE WCS.Team_Name = @team
+                WHERE WCS.Team_Name = '${team}'
                 Group By MatchID, WCP.Player_Name, WCS.Team_Name
                 ORDER BY Goals_Count DESC)
         SELECT Player_Name, SUM(Goals_Count) AS Goals
@@ -480,12 +480,6 @@ async function search_matches(req, res) {
 
 // Route 8 (handler)
 async function search_players(req, res) {
-    // TODO: TASK 9: implement and test, potentially writing your own (ungraded) tests
-    // IMPORTANT: in your SQL LIKE matching, use the %query% format to match the search query to substrings, not just the entire string
-
-
-
-    //query parameter
     const Name = req.query.Name
     const Nationality = req.query.Nationality
     const Club = req.query.Club

@@ -1,6 +1,4 @@
 import React, {Component} from "react";
-import {Card} from "react-bootstrap";
-import {Button} from "@material-ui/core";
 import "./BoxSlider.css";
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";

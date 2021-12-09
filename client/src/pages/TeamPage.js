@@ -3,54 +3,17 @@ import {Divider, Table} from 'antd'
 import MenuBar from '../components/MenuBar';
 import CardTeam from "../components/CardTeam";
 import Item from "antd/es/list/Item";
-import {getAllMatchesStats} from "../fetcher";
-
+import {getAllMatchesStats, getBestScorers} from "../fetcher";
 const statsMatchesColumns = [
   {
-    title: 'Year',
-    dataIndex: 'year',
-    key: 'year',
+    title: 'Player_Name',
+    dataIndex: 'Player_Name',
+    key: 'Player_Name',
   },
   {
-    title: 'Stage',
-    dataIndex: 'stage',
-    key: 'stage',
-
-  },
-  {
-    title: 'Stadium',
-    dataIndex: 'stadium',
-    key: 'stadium',
-
-  },
-  {
-    title: 'Home Team',
-    dataIndex: 'Home_Team_Name',
-    key: 'Home_Team_Name',
-
-  },
-  {
-    title: 'Away Team',
-    dataIndex: 'Away_Team_Name',
-    key: 'Away_Team_Name',
-
-  },
-  {
-    title: 'Home Team Goals',
-    dataIndex: 'home_team_goals',
-    key: 'home_team_goals',
-
-  },
-  {
-    title: 'Away Team Goals',
-    dataIndex: 'away_team_goals',
-    key: 'away_team_goals',
-
-  },
-  {
-    title: 'Attendance',
-    dataIndex: 'Attendance',
-    key: 'Attendance',
+    title: 'Goals',
+    dataIndex: 'Goals',
+    key: 'Goals',
 
   },
 ];
@@ -59,41 +22,45 @@ const statsMatchesColumns = [
 class HomePage extends React.Component {
 
   componentDidMount() {
-    getAllMatchesStats(null, null, 'Spain', 'England').then(res => {
-      this.setState({ statMatchesResults: res.results })
+    getBestScorers(null, null, 'Spain').then(res => {
+      this.setState({ scorersResults: res.results })
+      console.log("aaa")
+      console.log(this.state.scorersResults)
+      console.log("bbb")
+
     })
-
-
   }
-
   constructor(props) {
     super(props)
 
     this.state = {
       matchesResults: [],
+      scorersResults: [],
       playerName: "",
+      team: "Brazil",
 
     }
 
-
   }
 
-
-
-
-
+  scorersOnChange() {
+    getBestScorers(null, null,  this.state.team).then((res) => {
+      this.setState({ statMatchesResults: res.results });
+    });
+  }
 
   render() {
-
-
     return (
-
         <div>
+          {console.log("A")}
+          {console.log(this.scorersOnChange())}
+          {console.log(this.statMatchesResults)}
+          {console.log("b")}
+
           <MenuBar />
 
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }} align="center">
             <h2>Choose Team </h2>
-
           </div>
           <Divider />
           <div className="row" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
@@ -155,7 +122,8 @@ class HomePage extends React.Component {
                 <h4>selected team</h4>
               </center>
               <Divider />
-              <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
+              {console.log(this.state.team)}
+              <Table dataSource={this.state.scorersResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
             </div>
           </div>
 
