@@ -23,7 +23,15 @@ const getAllMatchesStats = async (page, pagesize, team_home, team_away) => {
 }
 
 const getBestScorers = async (page, pagesize, team) => {
+
     var res = await fetch(`http://${config.server_host}:${config.server_port}/scorers?team=${team}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const getWorldCupGoals = async (page, pagesize, team) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/worldCupGoals?team=${team}&page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
     })
     return res.json()
@@ -83,6 +91,7 @@ export {
     getAllStats,
     getAllMatchesStats,
     getBestScorers,
+    getWorldCupGoals,
     getPlayerNames,
     getAllPlayers,
     getMatch,

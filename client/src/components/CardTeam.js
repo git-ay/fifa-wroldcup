@@ -8,24 +8,25 @@ import './CardTeam.css'
 
 
 
-export default function CardTeam(team) {
+export default function CardTeam({team, onclick}) {
+
     return (
         <Card sx={{ maxWidth: 200 }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
                     height="120"
-                    image={"https://www.sciencekids.co.nz/images/pictures/flags680/"+team['team']+".jpg"}
+                    image={"https://www.sciencekids.co.nz/images/pictures/flags680/"+team+".jpg"}
                     alt={team}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        {team['team']}
+                        {team}
                     </Typography>
                 </CardContent>
             </CardActionArea>
                 <CardActions justify="center">
-                        <Button  size="large" color="primary">
+                        <Button  size="large" color="primary" onClick={onclick} >
                             SELECT
                         </Button>
                 </CardActions>

@@ -24,10 +24,13 @@ app.get('/matches/:league', routes.all_matches)
 // Route 3b - register as GET
 app.get('/stats/:player', routes.all_stats)
 
-// Route 3c - register as GET
+// ------------------------
 app.get('/statsMatches/teams', routes.all_matches_stats)
 
-app.get('/scorers/:team', routes.all_best_scorers)
+app.get('/scorers/', routes.all_best_scorers)
+
+app.get('/worldCupGoals/', routes.all_worldcup_goals)
+// ------------------------
 
 // Route 3c - register as GET
 app.get('/playerNames', routes.all_playerNames)
