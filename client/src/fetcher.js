@@ -87,7 +87,21 @@ const getPlayerSearch = async (name, nationality, club, rating_high, rating_low,
 }
 
 const getWageSomeVar = async (someVar) => {
-    var res = await fetch(`http://${config.server_host}:${config.server_port}/wage?SomeVar=${someVar}`, {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/statAnalysis/reg?SomeVar=${someVar}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const getRankAndPlayer = async (rank) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/statAnalysis/rank?rank=${rank}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const getAvgGoalPerMatch = async (rank) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/statAnalysis/avgGoal`, {
         method: 'GET',
     })
     return res.json()
@@ -106,5 +120,7 @@ export {
     getPlayer,
     getMatchSearch,
     getPlayerSearch,
-    getWageSomeVar
+    getWageSomeVar,
+    getRankAndPlayer,
+    getAvgGoalPerMatch
 }

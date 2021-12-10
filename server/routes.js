@@ -630,6 +630,77 @@ async function wage_somevar(req, res) {
     
 }
 
+// Route
+async function rank_and_player(req, res) {
+    
+    const rank = req.query.rank ? req.query.rank : 'Winner'
+
+    connection.query(`
+    WITH MatchEvents AS (
+        SELECT M.Year AS year, W.Team_Name AS teamCtry, playerName, numEvents
+        FROM (
+            SELECT Year, teamInit, playerName, numEvents
+            FROM
+                (SELECT Year, MatchID AS mid FROM WorldCupMatches) MTCH
+            LEFT OUTER JOIN
+                (SELECT MatchID AS mid,
+                        Team_Initials AS teamInit,
+                        Player_Name AS playerName,
+                        ROUND( LENGTH(Event) - LENGTH(REPLACE(Event, "'", "")) ) AS numEvents
+                 FROM WorldCupPlayers
+                 WHERE Event IS NOT NULL ) EVNT
+            ON MTCH.mid = EVNT.mid ) M
+        LEFT OUTER JOIN
+            (SELECT * FROM WorldCupStates) W
+        ON M.teamInit = W.Team_Initials
+    )
+    SELECT year, ${rank}, playerName AS playerWithMaxEvents, numEvents
+    FROM (
+        SELECT WC.year AS year,
+               ${rank},
+               ME.playerName,
+               SUM(ME.numEvents) AS numEvents
+        FROM (SELECT Year AS year, ${rank} FROM WorldCups) WC
+        LEFT OUTER JOIN
+             (SELECT * FROM MatchEvents) ME
+        ON WC.year = ME.year
+        WHERE WC.${rank} = ME.teamCtry
+        GROUP BY WC.year, ME.teamCtry, ME.playerName
+        ORDER BY WC.year, numEvents DESC
+    ) F GROUP BY year;
+    `, function (error, results) {
+            if (error) {
+                console.log(error)
+                return res.json({ error: error })
+            } else if (results) {
+                return res.json({ results: results })
+            }
+    }
+    );
+}
+
+// Route
+async function avg_goal_per_match(req, res) {
+
+    connection.query(`
+    SELECT Ctry, sum(NumGoals)/sum(GoalCnt) AS AvgGoalPerMatch
+    FROM (
+        SELECT sum(Home_Team_Goals) AS NumGoals, count(Home_Team_Name) AS GoalCnt, Home_Team_Name AS Ctry FROM WorldCupMatches GROUP BY Home_Team_Name
+        UNION ALL
+        SELECT sum(Away_Team_Goals) AS NumGoals, count(Away_Team_Name) AS GoalCnt, Away_Team_Name AS Ctry FROM WorldCupMatches GROUP BY Away_Team_Name
+    ) A
+    GROUP BY Ctry;
+    `, function (error, results) {
+            if (error) {
+                console.log(error)
+                return res.json({ error: error })
+            } else if (results) {
+                return res.json({ results: results })
+            }
+    }
+    );
+}
+
 
 module.exports = {
     hello,
@@ -646,5 +717,7 @@ module.exports = {
     player,
     search_matches,
     search_players,
-    wage_somevar
+    wage_somevar,
+    rank_and_player,
+    avg_goal_per_match
 }

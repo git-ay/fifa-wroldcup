@@ -16,7 +16,7 @@ import "shards-ui/dist/css/shards.min.css"
 import MatchesPage from './pages/MatchesPage';
 import IntroPage from "./pages/IntroPage";
 import TeamPage from "./pages/TeamPage";
-import WagePage from "./pages/WagePage";
+import StatAnalysisPage from "./pages/StatAnalysisPage";
 
 ReactDOM.render(
   <div>
@@ -43,9 +43,9 @@ ReactDOM.render(
 			   				render={() => (
 				   				<IntroPage />
 			   				)}/>
-		<Route exact		path="/wage"
+		<Route exact		path="/statAnalysis"
 			   				render={() => (
-				   				<WagePage />
+				   				<StatAnalysisPage />
 			   				)}/>							   
 
 		  <Route exact		path="/TeamPage"
