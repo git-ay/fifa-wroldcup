@@ -71,6 +71,13 @@ const getPlayerSearch = async (name, nationality, club, rating_high, rating_low,
     return res.json()
 }
 
+const getWageSomeVar = async (someVar) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/wage?SomeVar=${someVar}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 export {
     getAllMatches,
     getAllStats,
@@ -81,5 +88,6 @@ export {
     getMatchStats,
     getPlayer,
     getMatchSearch,
-    getPlayerSearch
+    getPlayerSearch,
+    getWageSomeVar
 }

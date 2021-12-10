@@ -482,11 +482,24 @@ async function search_players(req, res) {
 
         return res.json({ error: "Not valid. Please enter home & away" })
     }
-
-
-
-
 }
+
+
+// Route
+async function wage_somevar(req, res) {
+    
+    const SomeVar = req.query.SomeVar ? req.query.SomeVar : 'OverallRating'
+    connection.query(`SELECT Wage, ${SomeVar} FROM Players`, function (error, results) {
+        if (error) {
+            console.log(error)
+            return res.json({ error: error })
+        } else if (results) {
+            return res.json({ results: results })
+        }
+    } );
+    
+}
+
 
 module.exports = {
     hello,
@@ -500,5 +513,6 @@ module.exports = {
     matchStats,
     player,
     search_matches,
-    search_players
+    search_players,
+    wage_somevar
 }

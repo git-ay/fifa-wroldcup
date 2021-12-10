@@ -51,7 +51,8 @@ app.get('/search/matches', routes.search_matches)
 // Route 8 - register as GET
 app.get('/search/players', routes.search_players)
 
-
+// Route
+app.get('/wage', routes.wage_somevar)
 
 
 

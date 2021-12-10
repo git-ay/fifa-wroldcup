@@ -33,6 +33,11 @@ class MenuBar extends React.Component {
                       IntroPage
                   </NavLink>
               </NavItem>
+              <NavItem>
+                  <NavLink active  href="/wage" >
+                      Wage
+                  </NavLink>
+              </NavItem>              
           </Nav>
       </Navbar>
         )
