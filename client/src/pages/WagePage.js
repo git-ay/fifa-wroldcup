@@ -5,7 +5,8 @@ import CardPic from "../CardPic";
 import {Button} from "../components/Button";
 import { Chart as ChartJS } from 'chart.js/auto' // Alex: This line is required to avoid an error (Error: "category" is not a registered scale).
 import regression from 'regression'; // Alex: npm install --save regression required.
-import { Chart } from "react-google-charts"; // Alex: yarn add react-google-charts OR npm i react-google-charts
+import { Chart } from "react-google-charts"; // Alex: yarn add react-google-charts OR npm i react-google-charts (https://react-google-charts.com/)
+// npm install @mui/material @emotion/react @emotion/styled, npm install --save react-chartjs-2 chart.js
 
 import {
     Form,
@@ -110,7 +111,9 @@ function makeRegInput(input, someVar) {
         let w = input[i]['Wage'];
         if (typeof(s)==String) { s = s.replace('[^0-9.]+','') }
         if (typeof(w)==String) { w = w.replace('[^0-9.]+','') }
-        regInput.push([parseFloat(s), parseFloat(w)]); 
+        s = parseFloat(s);
+        w = parseFloat(w);
+        if ( w < 500 ) { regInput.push([s, w]); } // There are some outliers...
         i++; 
     }
     console.log("regInput", regInput)
@@ -126,7 +129,8 @@ function makeRegPlotInput(pointEstimates, wageAndSomeVar) {
     while (i<pointEstimates.length) { 
         let w = wageAndSomeVar[i]['Wage'];
         if (typeof(w)==String) { w = w.replace('[^0-9.]+','') }
-        plotInput.push(pointEstimates[i].concat([ parseFloat(w) ])); 
+        w = parseFloat(w);
+        if ( w < 500 ) { plotInput.push(pointEstimates[i].concat([ w ])); } // There are some outliers...
         i++; 
     }
     console.log("plotInput", plotInput)
@@ -148,7 +152,7 @@ class WagePage extends React.Component {
             intercept: "",
             mdlStr: "",
             open: false,
-
+            r_square: ""
             // homeTeam: "Brazil",
             // awayTeam: "England",
             // homeTeamGoals: [0,3,1,1],
@@ -184,7 +188,8 @@ class WagePage extends React.Component {
             this.state.pointEstimates = regRes.points;
             this.state.beta = regRes.equation[0];
             this.state.intercept = regRes.equation[1];
-            this.state.mdlStr = regRes.string;            
+            this.state.mdlStr = regRes.string;
+            this.state.r_square = regRes.r2    
             console.log("regRes", regRes)
             console.log("this.state.pointEstimates", this.state.pointEstimates)
             console.log("this.state.wageAndSomeVar", this.state.wageAndSomeVar)
@@ -234,9 +239,9 @@ class WagePage extends React.Component {
 
             <div>
                 <MenuBar />
-                <Form style={{ width: "20vw", margin: "3vh", marginTop: "3vh" }} >
+                <Form style={{ width: "50vw", margin: "3vh", marginTop: "3vh" }} >
                 <Dropdown open={this.state.open} toggle={this.toggle}>
-                    <DropdownToggle outline theme="info">Select some variable</DropdownToggle>
+                    <DropdownToggle outline theme="info">Select some feature x to estimate the expected wage ŷ of football players</DropdownToggle>
                     <DropdownMenu> {/*primary, secondary, success, danger, warning, info, light and dark*/}
                         <DropdownItem value="OverallRating" onClick={() => { this.setAndGetSomeVar("OverallRating"); }}>OverallRating</DropdownItem>
                         <DropdownItem value="Potential" onClick={() => { this.setAndGetSomeVar("Potential"); }}>Potential</DropdownItem>
@@ -252,170 +257,41 @@ class WagePage extends React.Component {
                     </DropdownMenu>
                 </Dropdown>
                 </Form>
-                <Form style={{ width: "20vw", margin: "10vh", marginTop: "6vh" }}>
+                <Form style={{ width: "20vw", margin: "8vh", marginTop: "4vh" }}>
                     <Row>   
                         <Chart
-                            width={'600px'}
+                            width={'900px'}
                             height={'400px'}
                             chartType="Scatter"
                             loader={<div>Loading Chart</div>}
-                            data={[[this.state.someVar, 'Wage_pred', 'Wage']].concat(makeRegPlotInput(this.state.pointEstimates, this.state.wageAndSomeVar))}
+                            data={[['x = '.concat(this.state.someVar), 'ŷ = Predicted Wage (in $1000)', 'y = Wage (in $1000)']].concat(makeRegPlotInput(this.state.pointEstimates, this.state.wageAndSomeVar))}
                             options={{
-                                // Material design options
                                 chart: {
-                                title: "Wage scatter plot",
-                                subtitle: this.state.mdlStr,
+                                title: "Regression analysis",
+                                subtitle: 'Model: '.concat(this.state.mdlStr, '\, R^2: ', this.state.r_square),
                                 },
-                                width: 800,
-                                height: 500,
+                                width: 1000,
+                                height: 400,
                                 series: {
-                                0: { axis: 'WagePred' },
-                                1: { axis: 'Wage' },
+                                    0: { axis: 'ŷ = Predicted Wage (in $1000)' },
+                                    1: { axis: 'y = Wage (in $1000)', targetAxisIndex:1 }
                                 },
                                 axes: {
                                 y: {
-                                    'WagePred': { label: 'WagePred'  },
-                                    'Wage': { label: 'Wage'  },
-                                },
+                                    'ŷ = Predicted Wage (in $1000)': { label: 'ŷ = Predicted Wage (in $1000)' },
+                                    'y = Wage (in $1000)': { label: 'y = Wage (in $1000)' },
+                                },            
                                 },
                             }}
                             rootProps={{ 'data-testid': '4' }}
                             legendToggle
                         />                
-                        {/* <Col flex={2}>
-                            <FormGroup style={{ width: "20vw", margin: "0 auto" }}>
-                                <label>Select some variable  </label>
-                                <Select defaultValue="Brazil" style={{ width: 100 }} onChange={(e) => {
-                                   this.setHomeTeam(e)
-                                }}>
-                                    <Option value="England">England</Option>
-                                    <Option value="Argentina">Argentina</Option>
-                                    <Option value="Spain">Spain</Option>
-                                    <Option value="Germany">Germany</Option>
-                                    <Option value="Italy">Italy</Option>
-                                    <Option value="Uruguay">Uruguay</Option>
-                                </Select>
-                            </FormGroup>
-                        </Col> */}
-                        {/* <Col flex={2}>
-                            <FormGroup style={{ width: "20vw", margin: "0 auto"}}>
-                                <label>Away Team   :</label>
-                                <Select defaultValue="England" style={{ width: 150 }}  onChange={(e) => {
-                                    this.setAwayTeam(e)}}>
-                                    <Option value="Brazil">Brazil</Option>
-                                    <Option value="England">England</Option>
-                                    <Option value="Spain">Spain</Option>
-                                    <Option value="Uruguay">Uruguay</Option>
-                                    <Option value="Germany">Germany</Option>
-                                    <Option value="Netherlands">Netherlands</Option>
-                                    <Option value="Argentina">Argentina</Option>
-                                    <Option value="Italy">Italy</Option>
-                                </Select>
-
-                            </FormGroup>
-                        </Col> */}
-                        {/* <Col flex={2}>
-                            <div className="App" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                                <Button onClick={this.matchOnChangeTeams}
-                                type="button"
-                                buttonStyle="btn--primary-outline"
-                                buttonSize= "btn-medium"
-                                >Select Teams</Button>
-                            </div>
-                        </Col> */}
                     </Row>
                 </Form>
 
                 <Divider />
-                {/* <div style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-                    <center>
-                    <h2>Matches History </h2>
-                    </center>
-                    <Table dataSource={this.state.statMatchesResults} columns={statsMatchesColumns}  variant="dark" pagination={{ pageSizeOptions:[5, 10], defaultPageSize: 8}}/>
-                </div> */}
                 <Divider />
-                {/* <center>
-                <h2>Last Game Played</h2>
-                </center>
-                {this.state.matchDetails ? (
-                    <div style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                        <Card>
-                            <CardBody>
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col flex={2} style={{ textAlign: "left" }}>
-                                        <CardTitle>
-                                            <div align="center">
-                                                <CardPic
-                                                    title='Team'
-                                                    imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                    team = {this.state.homeTeam}
-                                                />
-                                            </div>
-                                        </CardTitle>
-                                    </Col>
-                                    <Col flex={2} style={{ textAlign: "center" }}>
-                                        <h4>Year: {this.state.matchDetails.Year}</h4>
-                                    </Col>
-                                    <Col flex={2} style={{ textAlign: "right" }}>
-
-                                        <CardTitle>
-                                            <div align="center"><CardPic
-                                                title='Team'
-                                                imageUrl='https://www.sciencekids.co.nz/images/pictures/flags680/'
-                                                team = {this.state.awayTeam}/>
-                                            </div>
-                                        </CardTitle>
-
-                                    </Col>
-
-                                </Row>
-                                <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "center" }}>
-                                        <h3>{this.state.matchDetails.Home_Team_Goals}</h3>
-
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Goals
-                                    </Col>
-
-                                    <Col span={9} style={{ textAlign: "center" }}>
-                                        <h3>{this.state.matchDetails.Away_Team_Goals}</h3>
-                                    </Col>
-                                </Row>
-                                 <Row gutter="30" align="middle" justify="center">
-                                    <Col span={9} style={{ textAlign: "center" }}>
-                                        <h5>{this.state.matchDetails.Half_time_Home_Goals}</h5>
-                                    </Col>
-                                    <Col span={6} style={{ textAlign: "center" }}>
-                                        Half Time
-                                    </Col>
-                                    <Col span={9} style={{ textAlign: "center" }}>
-                                        <h5>{this.state.matchDetails.Half_time_Away_Goals}</h5>
-                                    </Col>
-                                     <Col flex={2} style={{ textAlign: "center" }}>
-                                         <div><span> &nbsp; </span></div>
-                                         <h6>Stadium: {this.state.matchDetails.Stadium}</h6>
-                                         <h6>Stage: {this.state.matchDetails.Stage}</h6>
-                                         <h6>Referee: {this.state.matchDetails.Referee}</h6>
-                                     </Col>
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    </div>
-                ) : null} */}
                 <Divider />
-                {/* <center>
-                    <h2>Number of Goals throughout Matches History </h2>
-                </center>
-                    <div className='chart'  style={{ width: "70vw", margin: "0 auto", marginTop: "2vh" }}>
-                        <LineChart
-                            home_team={this.state.homeTeam}
-                            away_team={this.state.awayTeam}
-                            home_goals={this.state.homeTeamGoals}
-                            away_goals={this.state.awayTeamGoals}
-                            years={this.state.list_of_years}
-                        />
-                    </div> */}
             </div>
         );
     }
