@@ -132,13 +132,9 @@ async function all_players(req, res) {
 //------- 4b exp ------
 
 async function all_stats(req, res) {
-    // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
     const player = req.params.player ? req.params.player : 'cristiano ronaldo'
 
     if (req.query.page && !isNaN(req.query.page)) {
-        // This is the case where page is defined.
-        // The SQL schema has the attribute OverallRating, but modify it to match spec!
-        // TODO: query and return results here:
         const page = req.query.page
         const pagesize = req.query.pagesize ? req.query.pagesize : 10
         const offset = (page * pagesize) - pagesize
@@ -227,6 +223,146 @@ async function all_matches_stats(req, res) {
 
 
 }
+//-------------------
+async function all_best_scorers(req, res) {
+
+    const team = req.query.team ? req.query.team : 'Spain'
+    if (req.query.page && !isNaN(req.query.page)) {
+        const page = req.query.page
+        const pagesize = req.query.pagesize ? req.query.pagesize : 10
+        const offset = (page * pagesize) - pagesize
+        connection.query(`
+        WITH distinct_matches AS (
+            SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
+            Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
+            From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
+                WHERE WCS.Team_Name = '${team}'
+                Group By MatchID, WCP.Player_Name, WCS.Team_Name
+                ORDER BY Goals_Count DESC)
+        SELECT Player_Name, SUM(Goals_Count) AS Goals
+        FROM distinct_matches
+        GROUP BY Player_Name, Team_Name
+        ORDER BY SUM(Goals_Count) DESC
+        LIMIT 10;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+        connection.query(`WITH distinct_matches AS (
+            SELECT DISTINCT MatchID, WCP.Player_Name, WCS.Team_Name, Shirt_Number,
+            Sum(length(WCP.event) - length(replace(WCP.event, 'G','')) + length(WCP.event) - length(replace(WCP.event, 'P',''))) as Goals_Count
+            From WorldCupPlayers as WCP JOIN WorldCupStates WCS on WCP.Team_Initials = WCS.Team_Initials
+                WHERE WCS.Team_Name = '${team}'
+                Group By MatchID, WCP.Player_Name, WCS.Team_Name
+                ORDER BY Goals_Count DESC)
+        SELECT Player_Name, SUM(Goals_Count) AS Goals
+        FROM distinct_matches
+        GROUP BY Player_Name, Team_Name
+        ORDER BY SUM(Goals_Count) DESC
+        LIMIT 10;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+
+
+}
+
+
+async function all_worldcup_goals(req, res) {
+    const team = req.query.team ? req.query.team : 'Spain'
+    console.log("Team:", team)
+    if (req.query.page && !isNaN(req.query.page)) {
+        // This is the case where page is defined.
+        const page = req.query.page
+        const pagesize = req.query.pagesize ? req.query.pagesize : 10
+        const offset = (page * pagesize) - pagesize
+        connection.query(`WITH total_goals AS (
+                WITH Home AS (
+                    SELECT Home_Team_Name AS Team, Year, SUM(Home_Team_Goals) AS Goals
+                    FROM WorldCupMatches
+                    Where Home_Team_Name = '${team}'
+                    GROUP BY Year)
+                SELECT Home.Team, Home.Goals, Year
+                FROM Home
+                UNION
+                (
+                    WITH Away AS (
+                        SELECT Away_Team_Name AS Team, Year, SUM(Away_Team_Goals) AS Goals
+                        FROM WorldCupMatches
+                        Where Away_Team_Name = '${team}'
+                        GROUP BY Year)
+                    SELECT Away.Team, Away.Goals, Year
+                    FROM Away
+                    GROUP BY Year)
+            )
+            SELECT total_goals.Team AS Team, Sum(total_goals.Goals) AS Goals, total_goals.Year
+            FROM total_goals
+            GROUP BY total_goals.Year
+            ORDER BY Year DESC
+            LIMIT 5;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+
+    } else {
+            connection.query(`WITH total_goals AS (
+            WITH Home AS (
+                SELECT Home_Team_Name AS Team, Year, SUM(Home_Team_Goals) AS Goals
+                FROM WorldCupMatches
+                Where Home_Team_Name = '${team}'
+                GROUP BY Year)
+            SELECT Home.Team, Home.Goals, Year
+            FROM Home
+            UNION
+            (
+                WITH Away AS (
+                    SELECT Away_Team_Name AS Team, Year, SUM(Away_Team_Goals) AS Goals
+                    FROM WorldCupMatches
+                    Where Away_Team_Name = '${team}'
+                    GROUP BY Year)
+                SELECT Away.Team, Away.Goals, Year
+                FROM Away
+                GROUP BY Year)
+        )
+        SELECT total_goals.Team AS Team, Sum(total_goals.Goals) AS Goals, total_goals.Year
+        FROM total_goals
+        GROUP BY total_goals.Year
+        ORDER BY Year DESC
+        LIMIT 5;`, function (error, results, fields) {
+
+            if (error) {
+                console.log(error)
+                res.json({ error: error })
+            } else if (results) {
+                res.json({ results: results })
+            }
+        });
+    }
+
+
+}
+
+
+
+
+
 //-------------------
 async function all_playerNames(req, res) {
     // TODO: TASK 5: implement and test, potentially writing your own (ungraded) tests
@@ -427,12 +563,6 @@ async function search_matches(req, res) {
 
 // Route 8 (handler)
 async function search_players(req, res) {
-    // TODO: TASK 9: implement and test, potentially writing your own (ungraded) tests
-    // IMPORTANT: in your SQL LIKE matching, use the %query% format to match the search query to substrings, not just the entire string
-
-
-
-    //query parameter
     const Name = req.query.Name
     const Nationality = req.query.Nationality
     const Club = req.query.Club
@@ -507,6 +637,8 @@ module.exports = {
     all_matches,
     all_stats,
     all_matches_stats,
+    all_best_scorers,
+    all_worldcup_goals,
     all_playerNames,
     all_players,
     match,

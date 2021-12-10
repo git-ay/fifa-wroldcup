@@ -15,7 +15,7 @@ import {
 
 
 import { Table, Row, Col, Divider, Select } from "antd";
-import {getMatchSearch, getMatch, getMatchStats, getAllStats,getAllMatchesStats} from "../fetcher";
+import {getMatchSearch, getMatchStats, getAllStats,getAllMatchesStats} from "../fetcher";
 
 import MenuBar from "../components/MenuBar";
 const { Option } = Select;

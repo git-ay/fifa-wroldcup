@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@mobiscroll/react-lite": "^4.10.9",
     "@os-design/use-resize-observer": "^1.0.4",
     "chart.js": "^3.6.0",
     "chartist": "^0.11.4",
@@ -9,5 +10,8 @@
     "react-google-charts": "^3.0.15",
     "resize-observer-polyfill": "^1.5.1",
     "use-resize-observer": "^8.0.0"
+  },
+  "devDependencies": {
+    "@mui/material": "^5.2.2"
   }
 }

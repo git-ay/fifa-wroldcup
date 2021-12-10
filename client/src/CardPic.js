@@ -11,9 +11,7 @@ function CardPic({title, imageUrl,body,team}) {
                 <div className="card-title" align="center" >
                     <h4 > {team} </h4>
                 </div>
-                {/*<div className="card-body">*/}
-                {/*    <p>{body}</p>*/}
-                {/*</div>*/}
+
             </div>
 
         </div>

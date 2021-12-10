@@ -22,6 +22,21 @@ const getAllMatchesStats = async (page, pagesize, team_home, team_away) => {
     return res.json()
 }
 
+const getBestScorers = async (page, pagesize, team) => {
+
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/scorers?team=${team}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
+const getWorldCupGoals = async (page, pagesize, team) => {
+    var res = await fetch(`http://${config.server_host}:${config.server_port}/worldCupGoals?team=${team}&page=${page}&pagesize=${pagesize}`, {
+        method: 'GET',
+    })
+    return res.json()
+}
+
 const getPlayerNames = async (page, pagesize, year) => {
     var res = await fetch(`http://${config.server_host}:${config.server_port}/playerNames?page=${page}&pagesize=${pagesize}`, {
         method: 'GET',
@@ -82,6 +97,8 @@ export {
     getAllMatches,
     getAllStats,
     getAllMatchesStats,
+    getBestScorers,
+    getWorldCupGoals,
     getPlayerNames,
     getAllPlayers,
     getMatch,
