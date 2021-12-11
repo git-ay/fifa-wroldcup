@@ -226,7 +226,7 @@ class statAnalysis extends React.Component {
                     chartType="Histogram"
                     loader={<div>Loading Chart</div>}
                     data={[
-                        ['Country','Average goal per country']
+                        ['Country','Average goal per match']
                     ].concat(makeAvgGoalPlotInput(this.state.avgGoals))}
                     options={{
                         title: 'Distribution of the average goals per match',
