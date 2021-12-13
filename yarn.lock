@@ -348,6 +348,11 @@ d3-random@3:
   resolved "https://registry.npmjs.org/d3-random/-/d3-random-3.0.1.tgz"
   integrity sha512-FXMe9GfxTxqd5D6jFsQ+DJ8BJS4E/fT5mqqdjovykEB2oFbTMDVdg1MGFxfQW+FBOGoB++k8swBrgwSHT1cUXQ==
 
+d3-regression@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/d3-regression/-/d3-regression-1.3.9.tgz#61c34acb9b6bbd9172ede89f05d0b7fbd57ccdc0"
+  integrity sha512-PoMpToIvxSnVpgAZTCERVseRend40JIBICJxwATJ/T4laWGaI5dpRdRxrPITxD8hk8W455fKonVChwSmDyWEyg==
+
 d3-scale-chromatic@3:
   version "3.0.0"
   resolved "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.0.0.tgz"
