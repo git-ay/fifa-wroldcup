@@ -4,7 +4,8 @@ import { Chart } from "react-google-charts"; // Alex: yarn add react-google-char
 import { Form, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "shards-react"; // npm install @mui/material @emotion/react @emotion/styled, npm install --save react-chartjs-2 chart.js
 import { Row } from "antd"; // removed "webpack": "^5.65.0" from the package
 import { getWageSomeVar, getRankAndPlayer, getAvgGoalPerMatch } from "../fetcher";
-import MenuBar from "../components/MenuBar"; // npm install --legacy-peer-deps 
+import MenuBar from "../components/MenuBar";
+import {Divider} from "@material-ui/core"; // npm install --legacy-peer-deps
 
 function makeRegInput(input, someVar) {
     let i = 0;
@@ -174,7 +175,7 @@ class statAnalysis extends React.Component {
                         />                
                     </Row>
                 </Form>
-                
+                <Divider  />
                 <Form style={{ width: "50vw", margin: "3vh", marginTop: "3vh" }} >
                 <Dropdown open={this.state.secOpen} toggle={this.secToggle}>
                     <DropdownToggle outline theme="info">Select the ranking</DropdownToggle>
@@ -207,8 +208,9 @@ class statAnalysis extends React.Component {
                     }}
                 />
                     </Row>
-                </Form>                                
-                
+                </Form>
+                <Divider  />
+
                 <Form style={{ width: "50vw", margin: "3vh", marginTop: "1vh" }} >
                 <Dropdown open={this.state.thrOpen} toggle={this.thrToggle} >
                     <DropdownToggle outline theme="info" >Generate Average goal per match for each country</DropdownToggle>
@@ -216,7 +218,7 @@ class statAnalysis extends React.Component {
                     <DropdownItem value="Generate" onClick={() => { this.generatePlot(); }}>Generate</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                </Form>                
+                </Form>
 
                 <Form style={{ width: "20vw", margin: "8vh", marginTop: "4vh" }}>
                 <Row>   
