@@ -56,9 +56,14 @@ app.get('/search/matches', routes.search_matches)
 // Route 8 - register as GET
 app.get('/search/players', routes.search_players)
 
+// Route
+app.get('/statAnalysis/reg', routes.wage_somevar)
 
+// Route
+app.get('/statAnalysis/rank', routes.rank_and_player)
 
-
+// Route
+app.get('/statAnalysis/avgGoal', routes.avg_goal_per_match)
 
 app.listen(config.server_port, () => {
     console.log(`Server running at http://${config.server_host}:${config.server_port}/`);

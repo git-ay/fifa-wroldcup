@@ -3,6 +3,7 @@ import {Card,} from "react-bootstrap";
 import LineChart from "../components/LineChart";
 import CardPic from "../CardPic";
 import {Button} from "../components/Button";
+import { Chart as ChartJS } from 'chart.js/auto' // Alex: This line is required to avoid an error (Error: "category" is not a registered scale).
 
 
 import {
