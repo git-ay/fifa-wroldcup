@@ -5,16 +5,13 @@ import {
   Select, Row, Col, Divider
 } from 'antd'
 
-
 import MenuBar from '../components/MenuBar';
-import {getAllStats, getAllMatches} from '../fetcher'
-import {Form, FormGroup} from "shards-react";
+import {getAllStats} from '../fetcher'
+import {Form, FormGroup,NavLink} from "shards-react";
 import img1 from "../images/logo4.png";
 import MoreDeets from "../MoreDeets";
 import MoreDeetsSlider from "../MoreDeetsSlider";
 const { Option } = Select;
-
-
 
 
 const statsColumns = [
