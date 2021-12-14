@@ -68,6 +68,7 @@ class statAnalysis extends React.Component {
         this.toggle = this.toggle.bind(this)
         this.secToggle = this.secToggle.bind(this)
         this.thrToggle = this.thrToggle.bind(this)
+
         this.state = {
             someVar: "OverallRating",
             wageAndSomeVar: [],
@@ -86,24 +87,23 @@ class statAnalysis extends React.Component {
         };
         
     }
+
     toggle() { this.setState(prevState => {return {open: !prevState.open };}); }
     secToggle() { this.setState(prevState => {return {secOpen: !prevState.secOpen };}); }
     thrToggle() { this.setState(prevState => {return {thrOpen: !prevState.thrOpen };}); }
-    setAndGetSomeVar(some_var) { 
-        this.state.someVar = some_var;
-        console.log("res1", this.state.someVar);
+
+    setAndGetSomeVar(some_var) {
         getWageSomeVar(some_var).then((res) => {
+
+            this.state.someVar = some_var;
             this.setState({ wageAndSomeVar: res.results });
-            console.log("res2", makeRegInput(res.results, some_var));
             const regRes = regression.linear(makeRegInput(res.results, some_var));
+            console.log("AAXX",regRes)
             this.state.pointEstimates = regRes.points;
             this.state.beta = regRes.equation[0];
             this.state.intercept = regRes.equation[1];
             this.state.mdlStr = regRes.string;
-            this.state.r_square = regRes.r2    
-            console.log("regRes", regRes)
-            console.log("this.state.pointEstimates", this.state.pointEstimates)
-            console.log("this.state.wageAndSomeVar", this.state.wageAndSomeVar)
+            this.state.r_square = regRes.r2
         })
     }
     setAndGetRankAndPlayer(ranking) {

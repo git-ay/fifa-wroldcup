@@ -105,57 +105,60 @@ class HomePage extends React.Component {
             <h2>Choose Team </h2>
           </div>
           <Divider />
-          <div className="row" align="center" style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
-
-            <div className="column">
+          <div className="container">
+          <div className="row" align="center" >
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Brazil'} onclick={()=> {this.teamOnChange('Brazil')}} /></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'England'} onclick={()=> {this.teamOnChange('England')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Spain'} onclick={()=> {this.teamOnChange('Spain')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Italy'} onclick={()=> {this.teamOnChange('Italy')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Angola'} onclick={()=> {this.teamOnChange('Angola')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Chile'} onclick={()=> {this.teamOnChange('Chile')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Finland'} onclick={()=> {this.teamOnChange('Finland')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Japan'} onclick={()=> {this.teamOnChange('Japan')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Mexico'} onclick={()=> {this.teamOnChange('Mexico')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Peru'} onclick={()=> {this.teamOnChange('Peru')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Morocco'} onclick={()=> {this.teamOnChange('Morocco')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Slovenia'} onclick={()=> {this.teamOnChange('Slovenia')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Netherlands'} onclick={()=> {this.teamOnChange('Netherlands')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Nigeria'} onclick={()=> {this.teamOnChange('Nigeria')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Paraguay'} onclick={()=> {this.teamOnChange('Paraguay')}}/></Item>
             </div>
-            <div className="column">
+            <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Austria'} onclick={()=> {this.teamOnChange('Austria')}}/></Item>
             </div>
+            </div>
+          </div>
             <Divider />
+          <div>
             <div id={"my_location"} style={{ width: '70vw', margin: '0 auto', marginTop: '2vh' }}>
               <center>
                 <h2>Top Scorers </h2>
