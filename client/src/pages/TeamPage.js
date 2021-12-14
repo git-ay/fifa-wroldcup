@@ -155,7 +155,14 @@ class HomePage extends React.Component {
             <div className="col-lg-2 col-md-4 col-sm-6">
               <Item><CardTeam team={'Austria'} onclick={()=> {this.teamOnChange('Austria')}}/></Item>
             </div>
+            <div className="col-lg-2 col-md-4 col-sm-6">
+              <Item><CardTeam team={'Argentina'} onclick={()=> {this.teamOnChange('Argentina')}}/></Item>
             </div>
+            <div className="col-lg-2 col-md-4 col-sm-6">
+              <Item><CardTeam team={'Cameroon'} onclick={()=> {this.teamOnChange('Cameroon')}}/></Item>
+            </div>
+
+          </div>
           </div>
             <Divider />
           <div>
