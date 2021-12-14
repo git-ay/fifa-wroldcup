@@ -1,10 +1,40 @@
 import React from 'react';
 import MenuBar from '../components/MenuBar';
 import img1 from '../images/logo4.png'
-import {Button, Card, Divider} from "antd";
+import {Button, Card, Col, Divider, Row, Select, Table} from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MoreDeets from "../MoreDeets";
 import MoreDeetsSlider from "../MoreDeetsSlider";
+import {Form, FormGroup} from "shards-react";
+import {getAllStats} from '../fetcher'
+const { Option } = Select;
+
+const statsColumns = [
+  {
+    title: 'player',
+    dataIndex: 'player',
+    key: 'player',
+  },
+  {
+    title: 'Goals',
+    dataIndex: 'Goals',
+    key: 'Goals',
+  },
+  {
+    title: 'Yellow_Cards',
+    dataIndex: 'Yellow_Cards',
+    key: 'Yellow_Cards',
+
+  },
+  {
+    title: 'Red_Cards',
+    dataIndex: 'Red_Cards',
+    key: 'Red_Cards',
+
+  },
+];
+
+
 class IntroPage extends React.Component {
 
   constructor(props) {
@@ -16,6 +46,12 @@ class IntroPage extends React.Component {
     this.goToMatch = this.goToMatch.bind(this)
   }
 
+  playerOnChange(value) {
+    getAllStats(null, null, value).then((res) => {
+      this.setState({ statResults: res.results });
+
+    });
+  }
 
   goToMatch(matchId) {
     window.location = `/matches?id=${matchId}`
@@ -37,6 +73,7 @@ class IntroPage extends React.Component {
             <Divider />
 
           </div>
+
             <div>
               <MoreDeets />
             </div>
