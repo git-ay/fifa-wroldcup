@@ -145,10 +145,10 @@ async function all_stats(req, res) {
            SUM(CASE WHEN event_type = 4 THEN 1 ELSE 0 END) AS Yellow_Cards,
            SUM(CASE WHEN event_type = 5 or event_type = 6 THEN 1 ELSE 0 END) AS Red_Cards
         From events inner join events_metadata as EM on events.id_odsp=EM.id_odsp
+        Where EM.date>= 2012-01-01 and EM.date<= 2017-01-01 and player='${player}'
         GROUP BY player)
         Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
-        From CTE
-        Where date>= 2012-01-01 and date<= 2017-01-01 and player='${player}'`, function (error, results, fields) {
+        From CTE`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
@@ -166,10 +166,10 @@ async function all_stats(req, res) {
            SUM(CASE WHEN event_type = 4 THEN 1 ELSE 0 END) AS Yellow_Cards,
            SUM(CASE WHEN event_type = 5 or event_type = 6 THEN 1 ELSE 0 END) AS Red_Cards
         From events inner join events_metadata as EM on events.id_odsp=EM.id_odsp
+        Where EM.date>= 2012-01-01 and EM.date<= 2017-01-01 and player='${player}'
         GROUP BY player)
         Select player, sum(Goals) as Goals,  sum(Yellow_Cards) as Yellow_Cards, sum(Red_Cards) as Red_Cards
-        From CTE
-        Where date>= 2012-01-01 and date<= 2017-01-01 and player='${player}'`, function (error, results, fields) {
+        From CTE`, function (error, results, fields) {
 
             if (error) {
                 console.log(error)
