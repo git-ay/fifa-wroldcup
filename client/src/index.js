@@ -27,11 +27,6 @@ ReactDOM.render(
 							render={() => (
 								<HomePage />
 							)}/>
-        <Route exact
-							path="/players"
-							render={() => (
-								<PlayersPage />
-							)}/>
 
         <Route exact
 							path="/matches"
@@ -39,10 +34,7 @@ ReactDOM.render(
 								<MatchesPage />
 							)}/>
 
-		<Route exact		path="/IntroPage"
-			   				render={() => (
-				   				<IntroPage />
-			   				)}/>
+
 		<Route exact		path="/statAnalysis"
 			   				render={() => (
 				   				<StatAnalysisPage />

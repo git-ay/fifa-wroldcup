@@ -126,7 +126,7 @@ class statAnalysis extends React.Component {
             <div>
                 
                 <MenuBar />
-
+                <div style={{ width: '80vw', margin: '0 auto', marginTop: '3vh', alignItems:'center'}}>
                 <Form style={{ width: "50vw", margin: "3vh", marginTop: "3vh" }} >
                 <Dropdown open={this.state.open} toggle={this.toggle}>
                     <DropdownToggle outline theme="info">Select some feature x to estimate the expected wage ŷ of football players</DropdownToggle>
@@ -241,6 +241,8 @@ class statAnalysis extends React.Component {
             </Form>                                                
 
             </div>
+            </div>
+
         );
     }
 }

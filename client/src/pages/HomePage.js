@@ -90,8 +90,9 @@ class HomePage extends React.Component {
 
         <div>
           <MenuBar />
+
           <div style={{ width: '70vw', margin: '0 auto', marginTop: '3vh', alignItems:'center'}}>
-            <h3>Choose Player (Quick Start):  </h3>
+            <h3 >Choose Player (Quick Start):  </h3>
 
           <Form style={{ width: "80vw", margin: "0 auto", marginTop: "2vh" }}>
             <Row>
@@ -122,7 +123,6 @@ class HomePage extends React.Component {
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '15vh'}}>
               <h1> Choose Statistics: </h1>
             </div>
-            <Divider />
 
             <div>
               <MoreDeets />
