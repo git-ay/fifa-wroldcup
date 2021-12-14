@@ -115,21 +115,23 @@ class HomePage extends React.Component {
           <Divider />
 
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '30vh'}}>
-              <img src={img1}  width={650} height={350} mode='fit'   />
-            </div>
-            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '25vh'}}>
-              <h1> Choose Statistics to Present </h1>
+              <img src={img1}  width={750} height={400} mode='fit'   />
             </div>
             <Divider />
 
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '15vh'}}>
+              <h1> Choose Statistics: </h1>
+            </div>
+            <Divider />
+
+            <div>
+              <MoreDeets />
+            </div>
+            <div>
+              <MoreDeetsSlider />
+            </div>
           </div>
 
-          <div>
-            <MoreDeets />
-          </div>
-          <div>
-            <MoreDeetsSlider />
-          </div>
 
 
         </div>
