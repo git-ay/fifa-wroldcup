@@ -98,7 +98,6 @@ class statAnalysis extends React.Component {
             this.state.someVar = some_var;
             this.setState({ wageAndSomeVar: res.results });
             const regRes = regression.linear(makeRegInput(res.results, some_var));
-            console.log("AAXX",regRes)
             this.state.pointEstimates = regRes.points;
             this.state.beta = regRes.equation[0];
             this.state.intercept = regRes.equation[1];
